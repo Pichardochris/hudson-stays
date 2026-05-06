@@ -1,0 +1,12 @@
+node_modules
+dist
+dist-ssr
+*.log
+*.png
+chrome-profile*/
+edge-profile*/
+.git
+.vercel
+lovable*.html
+lovable*.txt
+supabase_schema.sql

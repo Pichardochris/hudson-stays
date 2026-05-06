@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="240" height="78" viewBox="0 0 240 78" role="img" aria-labelledby="title">
+  <title id="title">Hudson Stays</title>
+  <defs>
+    <linearGradient id="hudsonBlue" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#16B7E5"/>
+      <stop offset="1" stop-color="#0786C8"/>
+    </linearGradient>
+    <linearGradient id="hudsonGreen" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#B8D34C"/>
+      <stop offset="1" stop-color="#0E9E8F"/>
+    </linearGradient>
+  </defs>
+  <g transform="translate(6 8)">
+    <path fill="url(#hudsonBlue)" d="M36.8 1.8 3.4 31.1l9.2 10.5 8.9-7.8v30.4h14.7V35.1l.6-.5z"/>
+    <path fill="#0BA4D8" d="M36.8 1.8v32.8L55 48.5V18.1z"/>
+    <path fill="url(#hudsonGreen)" d="m36.8 1.8 33.4 29.3-9.2 10.5-8.9-7.8v30.4H37.4V35.1l-.6-.5z"/>
+    <path fill="#11A78E" opacity=".95" d="M36.8 34.6 52.1 46.2v18H37.4V35.1z"/>
+  </g>
+  <g fill="#11103D" font-family="Arial, Helvetica, sans-serif" font-weight="900" letter-spacing="1.2">
+    <text x="88" y="35" font-size="23">HUDSON</text>
+    <text x="88" y="63" font-size="23">STAYS</text>
+  </g>
+</svg>
