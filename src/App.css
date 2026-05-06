@@ -62,15 +62,13 @@ a.secondary-button {
 .proof-strip,
 .services-section,
 .before-after-section,
-.managed-properties,
 .timeline-section,
 .fit-section,
 .strategy-section,
 .final-cta,
 .faq-section,
 .report-experience,
-.standalone-page,
-.search-page {
+.standalone-page {
   width: min(1180px, calc(100% - 40px));
   margin: 0 auto;
 }
@@ -365,8 +363,7 @@ a:focus-visible {
 .strategy-section h2,
 .final-cta h2,
 .faq-section h2,
-.missing-report h1,
-.search-results-section h1 {
+.missing-report h1 {
   margin-bottom: 12px;
   color: var(--ink);
   font-size: clamp(2rem, 4.6vw, 4rem);
@@ -393,7 +390,6 @@ a:focus-visible {
 
 .services-section,
 .before-after-section,
-.managed-properties,
 .timeline-section,
 .fit-section,
 .strategy-section,
@@ -429,8 +425,6 @@ a:focus-visible {
 .final-cta,
 .faq-list details,
 .missing-report,
-.property-search-card,
-.property-frame-card,
 .before-after-graphic,
 .timeline article {
   border: 1px solid var(--line);
@@ -445,8 +439,7 @@ a:focus-visible {
 }
 
 .service-card svg,
-.strategy-grid svg,
-.property-frame-card svg {
+.strategy-grid svg {
   margin-bottom: 18px;
   color: var(--blue-dark);
 }
@@ -455,8 +448,7 @@ a:focus-visible {
 .strategy-grid h3,
 .timeline h3,
 .fit-columns h3,
-.before-after-graphic h3,
-.property-frame-card h3 {
+.before-after-graphic h3 {
   margin-bottom: 10px;
   font-size: 1.08rem;
 }
@@ -697,109 +689,6 @@ a:focus-visible {
 .before-after-graphic li,
 .fit-columns li {
   margin-bottom: 8px;
-}
-
-.managed-properties .section-heading {
-  max-width: 760px;
-}
-
-.property-search-card {
-  margin-bottom: 18px;
-  padding: 20px;
-  overflow: visible;
-}
-
-.property-search-card h3 {
-  margin-bottom: 14px;
-}
-
-.availability-search-card,
-.property-search-card.results {
-  padding: 22px;
-}
-
-.property-search-card hospitable-direct-mps,
-.property-search-card .hospitable-mps {
-  display: block;
-  width: 100%;
-  max-width: 100%;
-}
-
-.property-search-card .hospitable-mps,
-.property-search-card .hospitable-mps * {
-  box-sizing: border-box;
-}
-
-.property-search-card .hospitable-mps > .search-bar-container,
-.property-search-card .hospitable-mps .search-bar-container {
-  display: grid !important;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(118px, auto);
-  align-items: center;
-  gap: 14px;
-  width: 100% !important;
-  max-width: 100% !important;
-  margin: 0 !important;
-  padding: 14px !important;
-  border-radius: 10px !important;
-  background: rgba(255, 255, 255, 0.92) !important;
-}
-
-.property-search-card .hospitable-mps .search-bar-container > * {
-  min-width: 0 !important;
-  max-width: 100% !important;
-}
-
-.property-search-card .hospitable-mps button,
-.property-search-card .hospitable-mps input[type='submit'] {
-  min-height: 48px !important;
-  border: 0 !important;
-  border-radius: 8px !important;
-  background: linear-gradient(135deg, var(--navy), var(--blue-dark) 55%, var(--green-dark)) !important;
-  color: #fff !important;
-  font-weight: 900 !important;
-  box-shadow: 0 16px 34px rgba(8, 120, 191, 0.18) !important;
-}
-
-@media (max-width: 860px) {
-  .property-search-card .hospitable-mps > .search-bar-container,
-  .property-search-card .hospitable-mps .search-bar-container {
-    grid-template-columns: 1fr !important;
-    padding: 12px !important;
-  }
-}
-
-.property-carousel {
-  display: grid;
-  grid-auto-columns: minmax(320px, 78%);
-  grid-auto-flow: column;
-  gap: 16px;
-  overflow-x: auto;
-  padding: 4px 0 18px;
-  scroll-snap-type: x mandatory;
-}
-
-.property-frame-card {
-  overflow: hidden;
-  scroll-snap-align: start;
-}
-
-.property-frame-card > div {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 16px;
-}
-
-.property-frame-card h3 {
-  margin: 0;
-}
-
-.property-frame-card iframe {
-  display: block;
-  width: 100%;
-  height: 680px;
-  border: 0;
-  background: #fff;
 }
 
 .timeline-section .section-heading {
@@ -1213,23 +1102,6 @@ label small {
   padding: 34px;
 }
 
-.search-results-section {
-  min-height: calc(100vh - 140px);
-  padding: 46px 0 80px;
-}
-
-.search-results-section .section-heading {
-  max-width: 760px;
-}
-
-.search-results-section h1 {
-  font-size: clamp(2.2rem, 4vw, 3.55rem);
-}
-
-.property-search-card.results {
-  min-height: 520px;
-}
-
 @media (max-width: 980px) {
   .site-header {
     align-items: flex-start;
@@ -1295,15 +1167,13 @@ label small {
   .proof-strip,
   .services-section,
   .before-after-section,
-  .managed-properties,
   .timeline-section,
   .fit-section,
   .strategy-section,
   .final-cta,
   .faq-section,
   .report-experience,
-  .standalone-page,
-  .search-page {
+  .standalone-page {
     width: min(362px, calc(100% - 28px));
     max-width: 100%;
     margin-left: 14px;
@@ -1369,7 +1239,6 @@ label small {
     overflow-wrap: break-word;
   }
 
-  .search-results-section h1,
   .final-cta h2,
   .fit-section h2,
   .strategy-section h2,
@@ -1446,14 +1315,6 @@ label small {
 
   .mini-report-grid p {
     min-height: 42px;
-  }
-
-  .property-carousel {
-    grid-auto-columns: minmax(286px, 92%);
-  }
-
-  .property-frame-card iframe {
-    height: 560px;
   }
 
   .final-cta,

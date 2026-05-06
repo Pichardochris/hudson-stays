@@ -17,6 +17,7 @@ import './App.css'
 
 const bookingUrl = import.meta.env.VITE_GHL_CALENDAR_URL || '#book-property-review'
 const onboardingUrl = import.meta.env.VITE_GHL_ONBOARDING_FORM_URL || '#onboarding-form'
+const stayBookingUrl = 'https://book.stayhudson.com/'
 
 const emptyForm = {
   location: '',
@@ -63,8 +64,6 @@ const processSteps = [
 ]
 
 const processIcons = [ClipboardList, CalendarCheck, BarChart3]
-
-const hospitableIdentifier = '452b4055-cc9c-44a9-96a8-e1d5516896e4'
 
 const platformLogos = [
   { label: 'Airbnb', src: '/platform-logos/airbnb.png' },
@@ -161,18 +160,6 @@ function trackEvent(name, payload = {}) {
   if (!trackingEvents.includes(name)) return
   window.dispatchEvent(new CustomEvent('hudson_stays_tracking', { detail: { name, payload } }))
   console.info('[Hudson Stays tracking]', name, payload)
-}
-
-function useHospitableScript() {
-  useEffect(() => {
-    const src = 'https://hospitable.b-cdn.net/direct-property-search-widget/hospitable-search-widget.prod.js'
-    if (document.querySelector(`script[src="${src}"]`)) return
-
-    const script = document.createElement('script')
-    script.src = src
-    script.async = true
-    document.head.appendChild(script)
-  }, [])
 }
 
 function money(value) {
@@ -623,26 +610,10 @@ function ReportPage() {
   )
 }
 
-function ManagedProperties() {
-  useHospitableScript()
-
-  return (
-    <section className="managed-properties" id="managed-properties">
-      <div className="section-heading">
-        <p className="eyebrow">Currently managed</p>
-        <h2>See the kind of stays Hudson Stays operates.</h2>
-        <p>Search available Hudson Stays homes by date and guest count. Results show property cards with photos, details, and the property-specific booking path.</p>
-      </div>
-      <div className="property-search-card availability-search-card">
-        <h3>Search Hudson Stays availability</h3>
-        <hospitable-direct-mps identifier={hospitableIdentifier} type="custom" results-url="/search"></hospitable-direct-mps>
-      </div>
-    </section>
-  )
-}
-
-function SearchPage() {
-  useHospitableScript()
+function ExternalBookingRedirect() {
+  useEffect(() => {
+    window.location.replace(stayBookingUrl)
+  }, [])
 
   return (
     <div className="site-shell">
@@ -652,59 +623,15 @@ function SearchPage() {
         </a>
         <nav aria-label="Primary navigation">
           <a href="/">Home</a>
-          <a href="/#services">Services</a>
-          <a href="/properties">See Properties</a>
-          <a className="nav-start-button" href="/#onboarding-form">I'm Ready To Start</a>
-          <a className="nav-report-button" href="/#book-property-review">Get Revenue Report</a>
         </nav>
       </header>
-      <main className="search-page">
-        <section className="search-results-section">
-          <div className="section-heading">
-            <p className="eyebrow">Hudson Stays availability</p>
-            <h1>Search stays managed by Hudson Stays.</h1>
-            <p>Use the search below to compare available properties and open the booking page for the home that fits your trip.</p>
-          </div>
-          <div className="property-search-card results">
-            <hospitable-direct-mps identifier={hospitableIdentifier} type="custom"></hospitable-direct-mps>
-          </div>
+      <main className="standalone-page">
+        <section className="missing-report">
+          <h1>Opening Hudson Stays booking.</h1>
+          <p>If you are not redirected automatically, use the button below.</p>
+          <a className="primary-button" href={stayBookingUrl}>Book A Stay</a>
         </section>
       </main>
-    </div>
-  )
-}
-
-function PropertiesPage() {
-  return (
-    <div className="site-shell">
-      <header className="site-header">
-        <a href="/" className="logo" aria-label="Hudson Stays home">
-          <HudsonLogo />
-        </a>
-        <nav aria-label="Primary navigation">
-          <a href="/">Home</a>
-          <a href="/#services">Services</a>
-          <a href="/#strategy">Strategy</a>
-          <a href="/#faq">FAQ</a>
-          <a href="/properties">See Properties</a>
-          <a className="nav-start-button" href="/#onboarding-form">I'm Ready To Start</a>
-          <a className="nav-report-button" href="/#book-property-review">Get Revenue Report</a>
-        </nav>
-      </header>
-
-      <main>
-        <ManagedProperties />
-      </main>
-
-      <footer className="site-footer">
-        <p>Hudson Stays is operated by Niluma Real Estate Investments LLC.</p>
-        <nav>
-          <a href="/#privacy">Privacy Policy</a>
-          <a href="/#terms">Terms</a>
-          <a href="mailto:hello@hudsonstays.com">Contact</a>
-          <a href={bookingUrl}>Book a Property Review Call</a>
-        </nav>
-      </footer>
     </div>
   )
 }
@@ -765,10 +692,10 @@ function HomePage() {
           <HudsonLogo />
         </a>
         <nav aria-label="Primary navigation">
+          <a href={stayBookingUrl}>Book A Stay</a>
           <a href="#services">Services</a>
           <a href="#strategy">Strategy</a>
           <a href="#faq">FAQ</a>
-          <a href="/properties">See Properties</a>
           <a className="nav-start-button" href={onboardingUrl}>I'm Ready To Start</a>
           <a className="nav-report-button" href="#book-property-review">Get Revenue Report</a>
         </nav>
@@ -982,8 +909,8 @@ function HomePage() {
 
 function App() {
   if (window.location.pathname.startsWith('/property-report/')) return <ReportPage />
-  if (window.location.pathname.startsWith('/properties')) return <PropertiesPage />
-  if (window.location.pathname.startsWith('/search')) return <SearchPage />
+  if (window.location.pathname.startsWith('/properties')) return <ExternalBookingRedirect />
+  if (window.location.pathname.startsWith('/search')) return <ExternalBookingRedirect />
   return <HomePage />
 }
 
