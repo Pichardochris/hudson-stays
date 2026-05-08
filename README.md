@@ -6,8 +6,8 @@ Public MVP funnel for Hudson Stays furnished rental management and cohosting lea
 
 - Homepage uses the Hudson Stays positioning from the build spec.
 - Hero includes the Free Property Revenue Report form and locked report preview.
-- Form requires city/state or ZIP, bedrooms, bathrooms, rent baseline, furnished status, and email. Phone, address, and listing URL are optional fields for better follow-up and report confidence.
-- SMS checkbox validates the phone field when selected.
+- Form requires city/state or ZIP, bedrooms, bathrooms, rent baseline, furnished status, and email. Address and listing URL are optional fields for better follow-up and report confidence.
+- The public homepage form does not collect phone numbers or SMS opt-in consent while the GoHighLevel chat widget is embedded on the page.
 - Submission shows the branded report loading state.
 - A preliminary report is generated and displayed on-page.
 - Report URLs use `/property-report/{secure_token}` without email or phone in the URL.
@@ -108,7 +108,19 @@ VITE_GHL_CALENDAR_URL=
 VITE_GHL_ONBOARDING_FORM_URL=
 ```
 
-Do not expose API keys in client-side code. Use `VITE_GHL_CALENDAR_URL` only for the public booking URL and `VITE_GHL_ONBOARDING_FORM_URL` only for the public onboarding form URL. Custom field IDs are optional; if omitted, the contact still syncs with tags, email, phone when requested, and source. Set `GHL_REPORT_TRIGGER_TAG` when a GHL workflow should send the report email after the contact is tagged, or set `GHL_REPORT_WORKFLOW_WEBHOOK_URL` when a workflow webhook should receive the report payload directly.
+Do not expose API keys in client-side code. Use `VITE_GHL_CALENDAR_URL` only for the public booking URL and `VITE_GHL_ONBOARDING_FORM_URL` only for the public onboarding form URL. Custom field IDs are optional; if omitted, the contact still syncs with tags, email, and source. Set `GHL_REPORT_TRIGGER_TAG` when a GHL workflow should send the report email after the contact is tagged, or set `GHL_REPORT_WORKFLOW_WEBHOOK_URL` when a workflow webhook should receive the report payload directly.
+
+## Editing And Deployment Workflow
+
+Use this workflow for future Hudson Stays updates:
+
+1. Codex edits the code locally.
+2. Codex runs `npm run build` and checks the key pages.
+3. Codex creates a Vercel preview deployment, not a production deployment.
+4. You review the preview link and approve changes.
+5. Codex deploys to the live `hudson-stays` Vercel project only after approval.
+
+GitHub should be treated as the source backup and version history. Vercel environment variables remain outside GitHub.
 
 ### Rabbu Calculator Source
 

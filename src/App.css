@@ -496,18 +496,31 @@ a:focus-visible {
 }
 
 .platform-logo-image {
-  width: 118px;
-  min-height: 46px;
+  width: 136px;
+  min-height: 48px;
   border-radius: 8px;
-  padding: 8px 14px;
+  padding: 9px 16px;
 }
 
 .platform-image {
   display: block;
   width: 100%;
   max-width: 100%;
-  max-height: 28px;
+  max-height: 30px;
   object-fit: contain;
+}
+
+.platform-airbnb {
+  width: 112px;
+}
+
+.platform-booking,
+.platform-vrbo {
+  width: 150px;
+}
+
+.platform-furnished-finder {
+  width: 132px;
 }
 
 .platform-mark {
@@ -897,14 +910,16 @@ label small {
   height: 18px;
 }
 
-.sms-disclaimer {
+.sms-disclaimer,
+.form-legal-note {
   margin: -4px 0 6px;
   color: var(--muted);
   font-size: 0.78rem;
   line-height: 1.45;
 }
 
-.sms-disclaimer a {
+.sms-disclaimer a,
+.form-legal-note a {
   color: var(--blue-dark);
   font-weight: 900;
   text-decoration: underline;
@@ -1378,11 +1393,24 @@ label small {
   }
 
   .platform-logo-image {
-    width: 104px;
+    width: 112px;
   }
 
   .platform-image {
     max-height: 24px;
+  }
+
+  .platform-airbnb {
+    width: 96px;
+  }
+
+  .platform-booking,
+  .platform-vrbo {
+    width: 124px;
+  }
+
+  .platform-furnished-finder {
+    width: 116px;
   }
 
   .platform-mark {

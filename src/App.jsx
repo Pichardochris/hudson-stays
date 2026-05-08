@@ -28,8 +28,6 @@ const emptyForm = {
   currentRent: '',
   furnishedStatus: 'Yes',
   email: '',
-  wantsSms: false,
-  phone: '',
   address: '',
   listingLink: '',
 }
@@ -68,12 +66,10 @@ const processSteps = [
 const processIcons = [ClipboardList, CalendarCheck, BarChart3]
 
 const platformLogos = [
-  { label: 'Airbnb', src: '/platform-logos/airbnb.png' },
-  { label: 'Zillow', src: 'https://logo.clearbit.com/zillow.com' },
-  { label: 'Google Vacations', src: 'https://cdn.simpleicons.org/google/4285F4' },
-  { label: 'Whimstay', src: 'https://logo.clearbit.com/whimstay.com' },
-  { label: 'Booking.com', src: '/platform-logos/booking.png' },
-  { label: 'Furnished Finder', src: '/platform-logos/furnished-finder.png' },
+  { label: 'Airbnb', src: '/platform-logos/airbnb.png', slug: 'airbnb' },
+  { label: 'Vrbo', src: '/platform-logos/vrbo.png', slug: 'vrbo' },
+  { label: 'Booking.com', src: '/platform-logos/booking.png', slug: 'booking' },
+  { label: 'Furnished Finder', src: '/platform-logos/furnished-finder.png', slug: 'furnished-finder' },
 ]
 
 const exampleRevenue = {
@@ -126,11 +122,11 @@ const legalPages = {
       {
         heading: 'No Mobile Opt-In Sharing',
         text:
-          'No mobile information will be shared with third parties/affiliates for marketing/promotional purposes. Information sharing to subcontractors in support services, such as customer service is permitted. All other use case categories exclude text messaging originator opt-in data and consent; this information will not be shared with any third parties. Text messaging originator opt-in data and consent will not be shared with any third parties, except for aggregators and providers of the text message services.',
+          'No mobile information will be shared with outside parties for marketing or promotional purposes. Information sharing to subcontractors in support services, such as customer service, is permitted. All other use case categories exclude text messaging originator opt-in data and consent; this information will not be shared with third parties for marketing or promotional purposes. Text messaging originator opt-in data and consent will not be shared with any third parties, except for aggregators and providers of the text message services.',
       },
       {
         heading: 'Contact',
-        text: 'Questions about privacy can be sent to hello@hudsonstays.com.',
+        text: 'Questions about privacy can be sent to hudsonstays@gmail.com.',
       },
     ],
   },
@@ -154,12 +150,12 @@ const legalPages = {
       {
         heading: 'Opt Out',
         text:
-          'You can opt out of SMS messages at any time by replying STOP. For assistance, reply HELP or contact hello@hudsonstays.com.',
+          'You can opt out of SMS messages at any time by replying STOP. For assistance, reply HELP or contact hudsonstays@gmail.com.',
       },
       {
         heading: 'Rejoining Instructions',
         text:
-          'If you have opted out and want to receive messages again, submit a new website form with SMS consent selected or contact Hudson Stays at hello@hudsonstays.com.',
+          'If you have opted out and want to receive messages again, contact Hudson Stays at hudsonstays@gmail.com for assistance.',
       },
       {
         heading: 'Carrier Disclaimer',
@@ -177,7 +173,7 @@ const legalPages = {
       },
       {
         heading: 'Contact',
-        text: 'Questions about these terms can be sent to hello@hudsonstays.com.',
+        text: 'Questions about these terms can be sent to hudsonstays@gmail.com.',
       },
     ],
   },
@@ -374,14 +370,12 @@ function ReportForm({ source, compact = false, onSubmitted }) {
     if (!form.currentRent) nextErrors.currentRent = 'Required.'
     if (!form.email.trim()) nextErrors.email = 'Email is required.'
     else if (!/^\S+@\S+\.\S+$/.test(form.email)) nextErrors.email = 'Enter a valid email.'
-    if (form.wantsSms && !/^\+?[\d\s().-]{10,}$/.test(form.phone)) nextErrors.phone = 'Enter a valid phone number.'
 
     setErrors(nextErrors)
     if (Object.keys(nextErrors).length) return
 
     trackEvent(source === 'hero' ? 'hero_form_submitted' : 'final_cta_form_submitted', {
       location: form.location,
-      smsEligible: form.wantsSms,
     })
     onSubmitted({ ...form }, source)
   }
@@ -423,11 +417,6 @@ function ReportForm({ source, compact = false, onSubmitted }) {
           {errors.email && <small>{errors.email}</small>}
         </label>
         <label>
-          <span>Phone number <em>optional</em></span>
-          <input type="tel" value={form.phone} onChange={(event) => update('phone', event.target.value)} placeholder="(555) 123-4567" />
-          {errors.phone && <small>{errors.phone}</small>}
-        </label>
-        <label>
           <span>Full property address <em>optional</em></span>
           <input value={form.address} onChange={(event) => update('address', event.target.value)} placeholder="123 Main St, Hudson, NY" />
         </label>
@@ -437,12 +426,8 @@ function ReportForm({ source, compact = false, onSubmitted }) {
         </label>
       </div>
 
-      <label className="sms-check">
-        <input type="checkbox" checked={form.wantsSms} onChange={(event) => update('wantsSms', event.target.checked)} />
-        <span>I consent to receive non-marketing text messages from Hudson Stays about my revenue report, appointment reminders, and service-related follow-up. Message frequency may vary. Message and data rates may apply. Text HELP for assistance, reply STOP to opt out.</span>
-      </label>
-      <p className="sms-disclaimer">
-        Consent is not required to receive a revenue report.
+      <p className="form-legal-note">
+        By submitting, you agree that Hudson Stays may use your information to prepare your report and follow up about your inquiry.
         {' '}See our <a href="/privacy.html">Privacy Policy</a> and <a href="/terms.html">Terms & Conditions</a>.
       </p>
       <button className="primary-button" type="submit">Unlock My Revenue Report</button>
@@ -742,7 +727,7 @@ function SiteFooter() {
       <nav>
         <a href="/privacy.html">Privacy Policy</a>
         <a href="/terms.html">Terms & Conditions</a>
-        <a href="mailto:hello@hudsonstays.com">Contact</a>
+        <a href="mailto:hudsonstays@gmail.com">Contact</a>
         <a href={bookingUrl}>Book a Property Review Call</a>
       </nav>
     </footer>
@@ -893,7 +878,7 @@ function HomePage() {
         <section className="proof-strip" aria-label="Properties managed on">
           <span>Properties managed on</span>
           {platformLogos.map((logo) => (
-            <strong className={logo.src ? 'platform-logo platform-logo-image' : 'platform-logo'} key={logo.label} role="img" aria-label={logo.label} title={logo.label}>
+            <strong className={`platform-logo platform-logo-image platform-${logo.slug}`} key={logo.label} role="img" aria-label={logo.label} title={logo.label}>
               <PlatformLogoMark logo={logo} />
             </strong>
           ))}
