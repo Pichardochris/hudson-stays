@@ -15,8 +15,10 @@ import {
 } from 'lucide-react'
 import './App.css'
 
-const bookingUrl = import.meta.env.VITE_GHL_CALENDAR_URL || '#book-property-review'
-const onboardingUrl = import.meta.env.VITE_GHL_ONBOARDING_FORM_URL || '#onboarding-form'
+const reviewCalendarUrl =
+  'https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ3c-KynyXwjm13WJaLtU9wxZHm2CHbYvk2F3G7vBdI4TdiUo-Luys0zMKuh36ILfixSu6uB-Smr'
+const bookingUrl = import.meta.env.VITE_GHL_CALENDAR_URL || reviewCalendarUrl
+const onboardingUrl = import.meta.env.VITE_GHL_ONBOARDING_FORM_URL || reviewCalendarUrl
 const stayBookingUrl = 'https://book.stayhudson.com/'
 
 const emptyForm = {
@@ -98,6 +100,89 @@ const faqItems = [
   ['What if my property is not a fit?', 'Then we will tell you. Some properties are better as long-term rentals, some are better as mid-term rentals, and some are strong STR candidates. The goal is to recommend the best path, not force the wrong strategy.'],
 ]
 
+const legalPages = {
+  '/privacy': {
+    eyebrow: 'Privacy Policy',
+    title: 'Privacy Policy',
+    updated: 'Last updated May 7, 2026',
+    intro:
+      'Hudson Stays is operated by Niluma Real Estate Investments LLC. We collect the information you submit so we can prepare revenue reports, respond to inquiries, schedule calls, and provide property management information.',
+    sections: [
+      {
+        heading: 'Information We Collect',
+        text:
+          'We may collect your name, email, phone number, property address, property details, listing URL, message content, and basic website interaction data.',
+      },
+      {
+        heading: 'How We Use Information',
+        text:
+          'We use this information to create property revenue reports, follow up about Hudson Stays services, schedule calls, improve the website, and communicate with you about your inquiry.',
+      },
+      {
+        heading: 'SMS Consent',
+        text:
+          'If you opt in to text messages, we use your phone number to send report links, appointment reminders, and service-related follow-up. Message frequency varies. Message and data rates may apply. Reply STOP to unsubscribe or HELP for help.',
+      },
+      {
+        heading: 'No Mobile Opt-In Sharing',
+        text:
+          'No mobile information will be shared with third parties/affiliates for marketing/promotional purposes. Information sharing to subcontractors in support services, such as customer service is permitted. All other use case categories exclude text messaging originator opt-in data and consent; this information will not be shared with any third parties. Text messaging originator opt-in data and consent will not be shared with any third parties, except for aggregators and providers of the text message services.',
+      },
+      {
+        heading: 'Contact',
+        text: 'Questions about privacy can be sent to hello@hudsonstays.com.',
+      },
+    ],
+  },
+  '/terms': {
+    eyebrow: 'Terms',
+    title: 'Terms and SMS Terms',
+    updated: 'Last updated May 7, 2026',
+    intro:
+      'By using this website or submitting a form, you agree that Hudson Stays may contact you about your inquiry and that all revenue information is preliminary and not guaranteed.',
+    sections: [
+      {
+        heading: 'Revenue Reports',
+        text:
+          'Revenue reports are estimates based on submitted property details, available market data, comparable rental assumptions, seasonality, and management assumptions. They are not guarantees of future income.',
+      },
+      {
+        heading: 'SMS Program',
+        text:
+          'Hudson Stays is operated by Niluma Real Estate Investments LLC. When you choose to receive text messages, Hudson Stays may send report links, appointment reminders, and related service messages. Message frequency varies. Message and data rates may apply.',
+      },
+      {
+        heading: 'Opt Out',
+        text:
+          'You can opt out of SMS messages at any time by replying STOP. For assistance, reply HELP or contact hello@hudsonstays.com.',
+      },
+      {
+        heading: 'Rejoining Instructions',
+        text:
+          'If you have opted out and want to receive messages again, submit a new website form with SMS consent selected or contact Hudson Stays at hello@hudsonstays.com.',
+      },
+      {
+        heading: 'Carrier Disclaimer',
+        text: 'Wireless carriers are not liable for delayed or undelivered messages.',
+      },
+      {
+        heading: 'Consent Not Required',
+        text:
+          'Consent to receive SMS messages is not required as a condition of purchasing services from Hudson Stays.',
+      },
+      {
+        heading: 'Legal Compliance',
+        text:
+          'Hudson Stays intends to comply with applicable messaging laws, carrier requirements, and industry standards. See the Privacy Policy for more information about how SMS consent is handled.',
+      },
+      {
+        heading: 'Contact',
+        text: 'Questions about these terms can be sent to hello@hudsonstays.com.',
+      },
+    ],
+  },
+}
+
 function HudsonLogo() {
   return <img className="logo-image" src="/hudson-stays-logo-cropped.png" alt="" aria-hidden="true" />
 }
@@ -178,6 +263,12 @@ function shortMoney(value) {
   }
 
   return money(number)
+}
+
+function percent(value) {
+  const number = Number(value)
+  if (!Number.isFinite(number) || number <= 0) return ''
+  return `${Math.round(number <= 1 ? number * 100 : number)}%`
 }
 
 function getStoredReports() {
@@ -281,7 +372,8 @@ function ReportForm({ source, compact = false, onSubmitted }) {
     if (!form.bedrooms) nextErrors.bedrooms = 'Required.'
     if (!form.bathrooms) nextErrors.bathrooms = 'Required.'
     if (!form.currentRent) nextErrors.currentRent = 'Required.'
-    if (form.email.trim() && !/^\S+@\S+\.\S+$/.test(form.email)) nextErrors.email = 'Enter a valid email.'
+    if (!form.email.trim()) nextErrors.email = 'Email is required.'
+    else if (!/^\S+@\S+\.\S+$/.test(form.email)) nextErrors.email = 'Enter a valid email.'
     if (form.wantsSms && !/^\+?[\d\s().-]{10,}$/.test(form.phone)) nextErrors.phone = 'Enter a valid phone number.'
 
     setErrors(nextErrors)
@@ -326,13 +418,18 @@ function ReportForm({ source, compact = false, onSubmitted }) {
           </select>
         </label>
         <label>
-          <span>Email <em>optional for now</em></span>
-          <input type="email" value={form.email} onChange={(event) => update('email', event.target.value)} placeholder="owner@email.com" />
+          <span>Email</span>
+          <input type="email" required value={form.email} onChange={(event) => update('email', event.target.value)} placeholder="owner@email.com" />
           {errors.email && <small>{errors.email}</small>}
         </label>
         <label>
-          <span>Property address <em>optional</em></span>
-          <input value={form.address} onChange={(event) => update('address', event.target.value)} placeholder="123 Main St" />
+          <span>Phone number <em>optional</em></span>
+          <input type="tel" value={form.phone} onChange={(event) => update('phone', event.target.value)} placeholder="(555) 123-4567" />
+          {errors.phone && <small>{errors.phone}</small>}
+        </label>
+        <label>
+          <span>Full property address <em>optional</em></span>
+          <input value={form.address} onChange={(event) => update('address', event.target.value)} placeholder="123 Main St, Hudson, NY" />
         </label>
         <label>
           <span>Current listing link <em>optional</em></span>
@@ -342,17 +439,12 @@ function ReportForm({ source, compact = false, onSubmitted }) {
 
       <label className="sms-check">
         <input type="checkbox" checked={form.wantsSms} onChange={(event) => update('wantsSms', event.target.checked)} />
-        <span>Want the report texted to you too?</span>
+        <span>I consent to receive non-marketing text messages from Hudson Stays about my revenue report, appointment reminders, and service-related follow-up. Message frequency may vary. Message and data rates may apply. Text HELP for assistance, reply STOP to opt out.</span>
       </label>
-
-      {form.wantsSms && (
-        <label>
-          <span>Phone number</span>
-          <input type="tel" value={form.phone} onChange={(event) => update('phone', event.target.value)} placeholder="(555) 123-4567" />
-          {errors.phone && <small>{errors.phone}</small>}
-        </label>
-      )}
-
+      <p className="sms-disclaimer">
+        Consent is not required to receive a revenue report.
+        {' '}See our <a href="/privacy.html">Privacy Policy</a> and <a href="/terms.html">Terms & Conditions</a>.
+      </p>
       <button className="primary-button" type="submit">Unlock My Revenue Report</button>
       <p className="microcopy">No guaranteed revenue claims. Just market data, property inputs, and a clear next step.</p>
     </form>
@@ -432,10 +524,10 @@ function FollowUpAccuracy({ report, onUpdated }) {
     <form className="accuracy-card" onSubmit={saveDetails}>
       <div>
         <h3>Want a more accurate report?</h3>
-        <p>Add your property address or listing link so we can compare it against better market data.</p>
+        <p>Add the full property address so we can improve report confidence with property-specific market data.</p>
       </div>
       <label>
-        <span>Property address</span>
+        <span>Full property address</span>
         <input value={address} onChange={(event) => setAddress(event.target.value)} />
       </label>
       <label>
@@ -523,6 +615,13 @@ function PropertyReport({ report }) {
           <h2>Local Market Snapshot</h2>
           <p>{marketSummary || 'Revenue estimates use local rental assumptions, property inputs, seasonal demand, comparable rental logic, and Hudson Stays operating standards.'}</p>
           {report.marketData?.source && <p><strong>Market data source:</strong> {report.marketData.source}</p>}
+          {(report.marketData?.adr || report.marketData?.occupancy || report.marketData?.compCount) && (
+            <p>
+              {report.marketData.adr ? <span><strong>ADR:</strong> {money(report.marketData.adr)} </span> : null}
+              {report.marketData.occupancy ? <span><strong>Occupancy:</strong> {percent(report.marketData.occupancy)} </span> : null}
+              {report.marketData.compCount ? <span><strong>Comps:</strong> {report.marketData.compCount}</span> : null}
+            </p>
+          )}
         </div>
         <div>
           <h2>Recommended Rental Strategy</h2>
@@ -632,6 +731,83 @@ function ExternalBookingRedirect() {
           <a className="primary-button" href={stayBookingUrl}>Book A Stay</a>
         </section>
       </main>
+    </div>
+  )
+}
+
+function SiteFooter() {
+  return (
+    <footer className="site-footer">
+      <p>Hudson Stays is operated by Niluma Real Estate Investments LLC.</p>
+      <nav>
+        <a href="/privacy.html">Privacy Policy</a>
+        <a href="/terms.html">Terms & Conditions</a>
+        <a href="mailto:hello@hudsonstays.com">Contact</a>
+        <a href={bookingUrl}>Book a Property Review Call</a>
+      </nav>
+    </footer>
+  )
+}
+
+function LegalFooterSections() {
+  return (
+    <section className="legal-footer-sections" aria-label="Privacy and SMS terms">
+      {Object.entries(legalPages).map(([path, content]) => (
+        <article key={path} id={path.replace('/', '')}>
+          <p className="eyebrow">{content.eyebrow}</p>
+          <h2>{content.title}</h2>
+          <p>{content.intro}</p>
+          <div>
+            {content.sections.map((section) => (
+              <details key={section.heading}>
+                <summary>{section.heading}</summary>
+                <p>{section.text}</p>
+              </details>
+            ))}
+          </div>
+        </article>
+      ))}
+    </section>
+  )
+}
+
+function SimpleHeader() {
+  return (
+    <header className="site-header">
+      <a className="logo" href="/" aria-label="Hudson Stays home">
+        <HudsonLogo />
+        <span>Hudson Stays</span>
+      </a>
+      <nav aria-label="Main navigation">
+        <a href={stayBookingUrl}>Book A Stay</a>
+        <a className="nav-start-button" href={onboardingUrl}>I'm Ready To Start</a>
+        <a className="nav-report-button" href="/#book-property-review">Get Revenue Report</a>
+      </nav>
+    </header>
+  )
+}
+
+function LegalPage({ page }) {
+  const content = legalPages[page] || legalPages['/privacy']
+
+  return (
+    <div className="site-shell">
+      <SimpleHeader />
+      <main className="standalone-page legal-page">
+        <p className="eyebrow">{content.eyebrow}</p>
+        <h1>{content.title}</h1>
+        <p className="legal-updated">{content.updated}</p>
+        <p className="legal-intro">{content.intro}</p>
+        <div className="legal-sections">
+          {content.sections.map((section) => (
+            <section key={section.heading}>
+              <h2>{section.heading}</h2>
+              <p>{section.text}</p>
+            </section>
+          ))}
+        </div>
+      </main>
+      <SiteFooter />
     </div>
   )
 }
@@ -894,20 +1070,15 @@ function HomePage() {
         </section>
       </main>
 
-      <footer className="site-footer">
-        <p>Hudson Stays is operated by Niluma Real Estate Investments LLC.</p>
-        <nav>
-          <a href="#privacy">Privacy Policy</a>
-          <a href="#terms">Terms</a>
-          <a href="mailto:hello@hudsonstays.com">Contact</a>
-          <a href={bookingUrl}>Book a Property Review Call</a>
-        </nav>
-      </footer>
+      <SiteFooter />
     </div>
   )
 }
 
 function App() {
+  if (window.location.pathname === '/privacy' || window.location.pathname === '/terms') {
+    return <LegalPage page={window.location.pathname} />
+  }
   if (window.location.pathname.startsWith('/property-report/')) return <ReportPage />
   if (window.location.pathname.startsWith('/properties')) return <ExternalBookingRedirect />
   if (window.location.pathname.startsWith('/search')) return <ExternalBookingRedirect />

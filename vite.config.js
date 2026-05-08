@@ -451,7 +451,231 @@ function parseRabbuMarketData(payload) {
   }
 }
 
-async function fetchRabbuMarketData(lead) {
+function moneyLikeToNumber(value) {
+  if (typeof value === 'number') return Number.isFinite(value) ? value : null
+  const raw = String(value ?? '').trim()
+  if (!raw) return null
+
+  const match = raw.match(/-?\$?\s*([\d,.]+)\s*([kKmM])?/)
+  if (!match) return null
+
+  const base = Number(match[1].replace(/,/g, ''))
+  if (!Number.isFinite(base)) return null
+
+  const suffix = match[2]?.toLowerCase()
+  if (suffix === 'k') return base * 1000
+  if (suffix === 'm') return base * 1000000
+  return base
+}
+
+function monthlyFromMoneyLike(value, key = '') {
+  const parsed = moneyLikeToNumber(value)
+  if (!parsed) return null
+
+  const hint = `${key} ${String(value ?? '')}`.toLowerCase()
+  if (/\b(annual|annually|yearly|yr|year)\b/.test(hint)) return parsed / 12
+  if (parsed > 120000) return parsed / 12
+  return parsed
+}
+
+function moneyValueFromAnyKey(object, keys) {
+  for (const key of keys) {
+    const value = monthlyFromMoneyLike(object[key], key)
+    if (value) return value
+  }
+
+  const normalized = Object.entries(object).find(([key, value]) => {
+    const next = key.toLowerCase().replace(/[_\s-]/g, '')
+    return keys.some((target) => next === target.toLowerCase().replace(/[_\s-]/g, '')) && monthlyFromMoneyLike(value, key)
+  })
+
+  return normalized ? monthlyFromMoneyLike(normalized[1], normalized[0]) : null
+}
+
+function parseRevenueRangeFromText(text = '') {
+  const ranges = Array.from(
+    String(text).matchAll(/\$?\s*([\d,.]+)\s*([kKmM])?\s*(?:-|to|–|—)\s*\$?\s*([\d,.]+)\s*([kKmM])?\s*(?:\/\s*)?(mo|month|monthly|yr|year|annual|annually)?/gi),
+  )
+
+  for (const range of ranges) {
+    const unit = range[5] || ''
+    const low = monthlyFromMoneyLike(`${range[1]}${range[2] || ''} ${unit}`, unit)
+    const high = monthlyFromMoneyLike(`${range[3]}${range[4] || ''} ${unit}`, unit)
+    if (low && high && Math.max(low, high) > 1000) {
+      return { low: Math.min(low, high), high: Math.max(low, high) }
+    }
+  }
+
+  return null
+}
+
+function parseRabbuCalculatorResult(payload) {
+  const genericParsed = parseRabbuMarketData(payload)
+  const revenueValues = []
+  let low = genericParsed?.low || null
+  let high = genericParsed?.high || null
+  let average = genericParsed?.mid || null
+  let adr = genericParsed?.adr || null
+  let occupancy = genericParsed?.occupancy || null
+  let revpan = null
+
+  walkValues(payload, (node) => {
+    if (!node || Array.isArray(node)) return
+
+    low =
+      low ||
+      moneyValueFromAnyKey(node, [
+        'seasonalizedMonthlyRevenueP25',
+        'monthlyRevenueP25',
+        'p25MonthlyRevenue',
+        'lowerMonthlyRevenue',
+        'revenueLowMonthly',
+        'lowMonthlyRevenue',
+        'lowEstimate',
+      ])
+    high =
+      high ||
+      moneyValueFromAnyKey(node, [
+        'seasonalizedMonthlyRevenueP75',
+        'monthlyRevenueP75',
+        'p75MonthlyRevenue',
+        'upperMonthlyRevenue',
+        'revenueHighMonthly',
+        'highMonthlyRevenue',
+        'highEstimate',
+      ])
+    average =
+      average ||
+      moneyValueFromAnyKey(node, [
+        'seasonalizedMonthlyRevenueProjection',
+        'monthlyRevenueProjection',
+        'projectedMonthlyRevenue',
+        'averageMonthlyRevenue',
+        'monthlyRevenue',
+        'projectedRevenue',
+        'annualRevenue',
+      ])
+    adr = adr || toNumber(node.adr || node.averageDailyRate || node.avgDailyRate, null)
+    occupancy = occupancy || toNumber(node.occupancy || node.occupancyRate || node.occ, null)
+    revpan = revpan || toNumber(node.revpan || node.revPAN || node.revenuePerAvailableNight, null)
+
+    const compRevenue = moneyValueFromAnyKey(node, [
+      'seasonalizedMonthlyRevenueProjection',
+      'monthlyRevenueProjection',
+      'averageMonthlyRevenue',
+      'monthlyRevenue',
+      'revenue',
+      'grossRevenue',
+      'projectedRevenue',
+    ])
+    if (compRevenue) revenueValues.push(compRevenue)
+  })
+
+  const text = JSON.stringify(payload)
+  const textRange = parseRevenueRangeFromText(text)
+  if ((!low || !high) && textRange) {
+    low = low || textRange.low
+    high = high || textRange.high
+  }
+
+  if ((!low || !high) && revenueValues.length >= 3) {
+    low = low || percentile(revenueValues, 0.25)
+    high = high || percentile(revenueValues, 0.75)
+  }
+
+  if (!low && average) low = average * 0.82
+  if (!high && average) high = average * 1.18
+
+  if (!low || !high) return null
+
+  return {
+    source: 'Rabbu Airbnb Calculator',
+    low: Math.min(low, high),
+    high: Math.max(low, high),
+    mid: average || (low + high) / 2,
+    adr,
+    occupancy,
+    revpan,
+    compCount: genericParsed?.compCount || revenueValues.length,
+  }
+}
+
+async function fetchRabbuCalculatorData(lead) {
+  const webhookUrl = getEnv('RABBU_CALCULATOR_WEBHOOK_URL')
+  const token = getEnv('RABBU_CALCULATOR_WEBHOOK_TOKEN')
+
+  if (!lead.address) {
+    return {
+      status: 'skipped_missing_address',
+      message: 'Add a full property address to run the Rabbu Airbnb Calculator workflow.',
+    }
+  }
+
+  if (!webhookUrl) {
+    return {
+      status: 'skipped_missing_credentials',
+      message:
+        'Set RABBU_CALCULATOR_WEBHOOK_URL to use Rabbu.com calculator results. The webhook should open https://rabbu.com/airbnb-calculator, enter the address, and return structured calculator data.',
+    }
+  }
+
+  try {
+    const controller = new AbortController()
+    const timeout = setTimeout(() => controller.abort(), 60000)
+    const response = await fetch(webhookUrl, {
+      method: 'POST',
+      signal: controller.signal,
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      },
+      body: JSON.stringify({
+        calculatorUrl: 'https://rabbu.com/airbnb-calculator',
+        address: lead.address,
+        location: lead.location,
+        bedrooms: lead.bedrooms,
+        bathrooms: lead.bathrooms,
+        currentRent: lead.currentRent,
+        furnishedStatus: lead.furnishedStatus,
+        requestedFields: [
+          'seasonalizedMonthlyRevenueProjection',
+          'revenueLow',
+          'revenueHigh',
+          'adr',
+          'occupancy',
+          'revpan',
+          'nearbyComparableProperties',
+        ],
+      }),
+    })
+    clearTimeout(timeout)
+
+    const text = await response.text()
+    const body = text ? safeJsonParse(text) || { rawText: text.slice(0, 5000) } : {}
+    const parsed = response.ok ? parseRabbuCalculatorResult(body) : null
+
+    return {
+      status: response.ok && parsed ? 'synced' : response.ok ? 'unparsed' : 'failed',
+      statusCode: response.status,
+      message:
+        response.ok && parsed
+          ? 'Rabbu Airbnb Calculator data parsed.'
+          : response.ok
+            ? 'Rabbu calculator workflow responded, but no revenue range could be parsed.'
+            : 'Rabbu calculator workflow failed.',
+      parsed,
+      response: response.ok ? undefined : body,
+    }
+  } catch (error) {
+    return {
+      status: 'failed',
+      message: error instanceof Error ? error.message : 'Unknown Rabbu calculator workflow error.',
+    }
+  }
+}
+
+async function fetchRabbuApiData(lead) {
   const apiKey = getEnv('RABBU_API_KEY')
   const apiUrl = getEnv('RABBU_API_URL', 'RABBU_API_BASE_URL')
   const method = (getEnv('RABBU_API_METHOD') || 'GET').toUpperCase()
@@ -516,6 +740,22 @@ async function fetchRabbuMarketData(lead) {
       status: 'failed',
       message: error instanceof Error ? error.message : 'Unknown Rabbu market data error.',
     }
+  }
+}
+
+async function fetchRabbuMarketData(lead) {
+  const calculatorData = await fetchRabbuCalculatorData(lead)
+  if (calculatorData.parsed) return calculatorData
+
+  const apiData = await fetchRabbuApiData(lead)
+
+  return {
+    ...apiData,
+    calculator: calculatorData,
+    message:
+      apiData.parsed || apiData.status === 'synced'
+        ? apiData.message
+        : `${calculatorData.message} ${apiData.message}`.trim(),
   }
 }
 
@@ -634,7 +874,7 @@ function buildFallbackNarrative({ lead, calculation }) {
     marketSummary:
       calculation.marketData.status === 'rabbu_enriched'
         ? 'Market data indicates enough furnished-rental upside to compare against traditional long-term rent after management fees.'
-        : 'This is a preliminary estimate based on property inputs. Rabbu enrichment can improve confidence once API credentials are configured.',
+        : 'This is a preliminary estimate based on property inputs. Rabbu calculator enrichment can improve confidence once the calculator workflow is configured.',
     regulationSummary: {
       summary: regulationQualifier,
       notes: regulationQualifier,
@@ -1227,11 +1467,18 @@ function revenueReportPlugin() {
               contactSync: crmSync,
             },
             marketData: {
-              provider: 'Rabbu backend source',
-              env: ['RABBU_API_KEY', 'RABBU_API_URL', 'RABBU_API_METHOD'],
+              provider: 'Rabbu calculator / backend source',
+              env: [
+                'RABBU_CALCULATOR_WEBHOOK_URL',
+                'RABBU_CALCULATOR_WEBHOOK_TOKEN',
+                'RABBU_API_KEY',
+                'RABBU_API_URL',
+                'RABBU_API_METHOD',
+              ],
               publicBranding: 'market data',
               status: report.integrations.rabbu.status,
               message: report.integrations.rabbu.message,
+              calculatorStatus: report.integrations.rabbu.calculator?.status || report.integrations.rabbu.status,
             },
             generation: {
               provider: 'OpenAI report generation',

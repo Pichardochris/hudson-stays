@@ -897,6 +897,20 @@ label small {
   height: 18px;
 }
 
+.sms-disclaimer {
+  margin: -4px 0 6px;
+  color: var(--muted);
+  font-size: 0.78rem;
+  line-height: 1.45;
+}
+
+.sms-disclaimer a {
+  color: var(--blue-dark);
+  font-weight: 900;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
 .microcopy {
   margin: 0;
   color: #6b747a;
@@ -983,6 +997,95 @@ label small {
 
 .standalone-page {
   padding: 28px 0 80px;
+}
+
+.legal-page {
+  max-width: 860px;
+}
+
+.legal-page h1 {
+  margin-bottom: 10px;
+  font-size: clamp(2.6rem, 6vw, 5rem);
+}
+
+.legal-updated,
+.legal-intro {
+  color: var(--muted);
+}
+
+.legal-intro {
+  max-width: 760px;
+  font-size: 1.12rem;
+  line-height: 1.7;
+}
+
+.legal-sections {
+  display: grid;
+  gap: 14px;
+  margin-top: 28px;
+}
+
+.legal-sections section {
+  padding: 22px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.78);
+  box-shadow: 0 18px 42px rgba(17, 16, 61, 0.06);
+}
+
+.legal-sections h2 {
+  margin-bottom: 8px;
+  font-size: 1.12rem;
+}
+
+.legal-sections p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+.legal-footer-sections {
+  width: min(1180px, calc(100% - 40px));
+  margin: 0 auto 28px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.legal-footer-sections article {
+  padding: 22px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.78);
+}
+
+.legal-footer-sections h2 {
+  margin-bottom: 8px;
+  font-size: 1.18rem;
+}
+
+.legal-footer-sections article > p:not(.eyebrow) {
+  color: var(--muted);
+  font-size: 0.92rem;
+  line-height: 1.55;
+}
+
+.legal-footer-sections details {
+  padding: 10px 0;
+  border-top: 1px solid var(--line);
+}
+
+.legal-footer-sections summary {
+  color: var(--ink);
+  cursor: pointer;
+  font-weight: 900;
+}
+
+.legal-footer-sections details p {
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.55;
 }
 
 .property-report {
@@ -1173,6 +1276,7 @@ label small {
   .final-cta,
   .faq-section,
   .report-experience,
+  .legal-footer-sections,
   .standalone-page {
     width: min(362px, calc(100% - 28px));
     max-width: 100%;
@@ -1251,6 +1355,7 @@ label small {
   }
 
   .form-grid,
+  .legal-footer-sections,
   .service-grid,
   .strategy-grid,
   .fit-columns,
