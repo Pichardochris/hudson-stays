@@ -899,15 +899,41 @@ label small {
   color: #9c3b2d;
 }
 
-.sms-check {
+.sms-check,
+.form-consent-check {
   display: flex;
-  align-items: center;
-  gap: 10px;
+  align-items: flex-start;
+  gap: 12px;
 }
 
-.sms-check input {
-  width: 18px;
-  height: 18px;
+.sms-check input,
+.form-consent-check input {
+  flex: 0 0 26px;
+  width: 26px;
+  height: 26px;
+  margin-top: 1px;
+  accent-color: var(--blue-dark);
+}
+
+.form-consent-check span {
+  color: var(--muted);
+  font-size: 0.84rem;
+  font-weight: 760;
+  line-height: 1.42;
+}
+
+.form-consent-check a {
+  color: var(--blue-dark);
+  font-weight: 900;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.field-error {
+  margin-top: -8px;
+  color: #9c3b2d;
+  font-size: 0.78rem;
+  font-weight: 850;
 }
 
 .sms-disclaimer,
@@ -942,6 +968,41 @@ label small {
 .loading-panel h2 {
   margin-bottom: 0;
   font-size: 1.35rem;
+}
+
+.thank-you-page {
+  padding: clamp(56px, 10vw, 112px) 0;
+}
+
+.thank-you-card {
+  display: grid;
+  gap: 18px;
+  max-width: 740px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: clamp(28px, 6vw, 56px);
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 22px 70px rgba(8, 120, 191, 0.12);
+}
+
+.thank-you-card h1 {
+  max-width: 680px;
+  margin-bottom: 0;
+  font-size: clamp(2.4rem, 7vw, 4.6rem);
+  line-height: 0.98;
+}
+
+.thank-you-card p:not(.eyebrow) {
+  max-width: 520px;
+  margin: 0;
+  color: var(--muted);
+  font-size: 1.15rem;
+  line-height: 1.5;
+}
+
+.thank-you-card .primary-button {
+  width: fit-content;
+  min-width: 260px;
 }
 
 .loading-panel ol {

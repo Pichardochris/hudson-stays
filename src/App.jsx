@@ -30,6 +30,7 @@ const emptyForm = {
   email: '',
   address: '',
   listingLink: '',
+  consent: false,
 }
 
 const trackingEvents = [
@@ -44,6 +45,7 @@ const trackingEvents = [
   'report_recommendation_cta_clicked',
   'email_booking_cta_clicked',
   'call_booked',
+  'thank_you_booking_cta_clicked',
 ]
 
 const serviceIcons = [Camera, BarChart3, MessageCircle, CalendarCheck, Wrench, ClipboardList]
@@ -370,6 +372,7 @@ function ReportForm({ source, compact = false, onSubmitted }) {
     if (!form.currentRent) nextErrors.currentRent = 'Required.'
     if (!form.email.trim()) nextErrors.email = 'Email is required.'
     else if (!/^\S+@\S+\.\S+$/.test(form.email)) nextErrors.email = 'Enter a valid email.'
+    if (!form.consent) nextErrors.consent = 'Required.'
 
     setErrors(nextErrors)
     if (Object.keys(nextErrors).length) return
@@ -426,10 +429,14 @@ function ReportForm({ source, compact = false, onSubmitted }) {
         </label>
       </div>
 
-      <p className="form-legal-note">
-        By submitting, you agree that Hudson Stays may use your information to prepare your report and follow up about your inquiry.
-        {' '}See our <a href="/privacy.html">Privacy Policy</a> and <a href="/terms.html">Terms & Conditions</a>.
-      </p>
+      <label className="form-consent-check">
+        <input type="checkbox" checked={form.consent} onChange={(event) => update('consent', event.target.checked)} required />
+        <span>
+          I agree that Hudson Stays may use my information to prepare my report and follow up about my inquiry.
+          {' '}See our <a href="/privacy.html">Privacy Policy</a> and <a href="/terms.html">Terms & Conditions</a>.
+        </span>
+      </label>
+      {errors.consent && <small className="field-error">{errors.consent}</small>}
       <button className="primary-button" type="submit">Unlock My Revenue Report</button>
       <p className="microcopy">No guaranteed revenue claims. Just market data, property inputs, and a clear next step.</p>
     </form>
@@ -728,9 +735,32 @@ function SiteFooter() {
         <a href="/privacy.html">Privacy Policy</a>
         <a href="/terms.html">Terms & Conditions</a>
         <a href="mailto:hudsonstays@gmail.com">Contact</a>
-        <a href={bookingUrl}>Book a Property Review Call</a>
+        <a href={onboardingUrl}>I'm Ready To Start</a>
       </nav>
     </footer>
+  )
+}
+
+function ThankYouPage() {
+  return (
+    <div className="site-shell">
+      <SimpleHeader />
+      <main className="standalone-page thank-you-page">
+        <section className="thank-you-card">
+          <p className="eyebrow">Report request received</p>
+          <h1>Thanks. We are reviewing your property details.</h1>
+          <p>Get ahead of the line, and book a call with our experts today.</p>
+          <a
+            className="primary-button"
+            href={bookingUrl}
+            onClick={() => trackEvent('thank_you_booking_cta_clicked')}
+          >
+            Book a Call With Our Experts
+          </a>
+        </section>
+      </main>
+      <SiteFooter />
+    </div>
   )
 }
 
@@ -832,7 +862,7 @@ function HomePage() {
         setReport(nextReport)
         setStatus('ready')
         trackEvent('report_generated', { token: nextReport.token, source })
-        window.history.replaceState({}, '', nextReport.reportUrl)
+        window.location.assign('/thank-you')
       }, 1800)
     } catch {
       window.setTimeout(() => {
@@ -841,7 +871,7 @@ function HomePage() {
         setReport(localReport)
         setStatus('ready')
         trackEvent('report_generated', { token: localReport.token, source })
-        window.history.replaceState({}, '', localReport.reportUrl)
+        window.location.assign('/thank-you')
       }, 1800)
     }
   }
@@ -1064,6 +1094,7 @@ function App() {
   if (window.location.pathname === '/privacy' || window.location.pathname === '/terms') {
     return <LegalPage page={window.location.pathname} />
   }
+  if (window.location.pathname.startsWith('/thank-you')) return <ThankYouPage />
   if (window.location.pathname.startsWith('/property-report/')) return <ReportPage />
   if (window.location.pathname.startsWith('/properties')) return <ExternalBookingRedirect />
   if (window.location.pathname.startsWith('/search')) return <ExternalBookingRedirect />
