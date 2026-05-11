@@ -525,7 +525,7 @@ a:focus-visible {
 }
 
 .platform-furnished-finder {
-  --platform-width: clamp(146px, 14vw, 190px);
+  --platform-width: clamp(200px, 20vw, 250px);
 }
 
 .platform-mark {
@@ -796,12 +796,20 @@ a:focus-visible {
 }
 
 .bad-fit {
-  background: rgba(19, 174, 226, 0.1);
+  background: rgba(184, 62, 48, 0.11);
 }
 
 .bad-fit svg,
 .bad-fit h3 {
-  color: #0b73c8;
+  color: #a93d32;
+}
+
+.bad-fit li {
+  color: #68413e;
+}
+
+.bad-fit .inline-link {
+  color: #b33d31;
 }
 
 .strategy-section {
@@ -1484,7 +1492,7 @@ label small {
   }
 
   .platform-furnished-finder {
-    --platform-width: 140px;
+    --platform-width: 178px;
   }
 
   .platform-mark {
