@@ -2,7 +2,8 @@ node_modules
 dist
 dist-ssr
 *.log
-*.png
+/*.png
+!public/**/*.png
 chrome-profile*/
 edge-profile*/
 .git
