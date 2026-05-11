@@ -20,6 +20,10 @@ const reviewCalendarUrl =
 const bookingUrl = import.meta.env.VITE_GHL_CALENDAR_URL || reviewCalendarUrl
 const onboardingUrl = import.meta.env.VITE_GHL_ONBOARDING_FORM_URL || reviewCalendarUrl
 const stayBookingUrl = 'https://book.stayhudson.com/'
+const businessAddress = '1622 Union Tpke, North Bergen, NJ 07047'
+const businessPhoneDisplay = '(201) 688-0434'
+const businessPhoneHref = 'tel:+12016880434'
+const businessEmail = 'hudsonstays@gmail.com'
 
 const emptyForm = {
   location: '',
@@ -128,7 +132,7 @@ const legalPages = {
       },
       {
         heading: 'Contact',
-        text: 'Questions about privacy can be sent to hudsonstays@gmail.com.',
+        text: `Questions about privacy can be sent to ${businessEmail}. Hudson Stays can also be reached at ${businessPhoneDisplay} or ${businessAddress}.`,
       },
     ],
   },
@@ -175,7 +179,7 @@ const legalPages = {
       },
       {
         heading: 'Contact',
-        text: 'Questions about these terms can be sent to hudsonstays@gmail.com.',
+        text: `Questions about these terms can be sent to ${businessEmail}. Hudson Stays can also be reached at ${businessPhoneDisplay} or ${businessAddress}.`,
       },
     ],
   },
@@ -730,11 +734,15 @@ function ExternalBookingRedirect() {
 function SiteFooter() {
   return (
     <footer className="site-footer">
-      <p>Hudson Stays is operated by Niluma Real Estate Investments LLC.</p>
+      <p>
+        Hudson Stays is operated by Niluma Real Estate Investments LLC.
+        {' '}<span>{businessAddress}</span>
+        {' '}<a href={businessPhoneHref}>{businessPhoneDisplay}</a>
+      </p>
       <nav>
         <a href="/privacy.html">Privacy Policy</a>
         <a href="/terms.html">Terms & Conditions</a>
-        <a href="mailto:hudsonstays@gmail.com">Contact</a>
+        <a href={`mailto:${businessEmail}`}>Contact</a>
         <a href={onboardingUrl}>I'm Ready To Start</a>
       </nav>
     </footer>

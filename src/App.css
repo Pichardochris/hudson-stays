@@ -489,38 +489,38 @@ a:focus-visible {
   width: 54px;
   min-height: 46px;
   padding: 8px 12px;
-  border: 1px solid rgba(11, 118, 190, 0.12);
+  border: 0;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.72);
+  background: transparent;
   color: var(--navy);
 }
 
 .platform-logo-image {
-  width: 136px;
-  min-height: 48px;
+  width: 132px;
+  min-height: 46px;
   border-radius: 8px;
-  padding: 9px 16px;
+  padding: 0;
 }
 
 .platform-image {
   display: block;
   width: 100%;
   max-width: 100%;
-  max-height: 30px;
+  max-height: 34px;
   object-fit: contain;
 }
 
 .platform-airbnb {
-  width: 112px;
+  width: 116px;
 }
 
 .platform-booking,
 .platform-vrbo {
-  width: 150px;
+  width: 142px;
 }
 
 .platform-furnished-finder {
-  width: 132px;
+  width: 136px;
 }
 
 .platform-mark {
@@ -1069,6 +1069,15 @@ label small {
 .site-footer p {
   margin: 0;
   font-weight: 760;
+  max-width: 620px;
+  line-height: 1.5;
+}
+
+.site-footer p a {
+  color: var(--navy);
+  font-weight: 950;
+  text-decoration: underline;
+  text-underline-offset: 2px;
 }
 
 .standalone-page {
@@ -1448,17 +1457,17 @@ label small {
   }
 
   .platform-logo {
-    width: 48px;
+    width: auto;
     min-height: 42px;
-    padding: 7px 10px;
+    padding: 0;
   }
 
   .platform-logo-image {
-    width: 112px;
+    width: 104px;
   }
 
   .platform-image {
-    max-height: 24px;
+    max-height: 28px;
   }
 
   .platform-airbnb {
@@ -1467,11 +1476,11 @@ label small {
 
   .platform-booking,
   .platform-vrbo {
-    width: 124px;
+    width: 112px;
   }
 
   .platform-furnished-finder {
-    width: 116px;
+    width: 108px;
   }
 
   .platform-mark {

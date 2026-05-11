@@ -1,0 +1,20 @@
+{
+  "rewrites": [
+    {
+      "source": "/thank-you",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/property-report/:path*",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/properties",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/search",
+      "destination": "/index.html"
+    }
+  ]
+}
