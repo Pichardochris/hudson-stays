@@ -75,7 +75,6 @@ const platformLogos = [
   { label: 'Airbnb', src: '/platform-logos/airbnb.png', slug: 'airbnb' },
   { label: 'Vrbo', src: '/platform-logos/vrbo.png', slug: 'vrbo' },
   { label: 'Booking.com', src: '/platform-logos/booking.png', slug: 'booking' },
-  { label: 'Furnished Finder', src: '/platform-logos/furnished-finder.png', slug: 'furnished-finder' },
 ]
 
 const exampleRevenue = {
@@ -527,7 +526,7 @@ function FollowUpAccuracy({ report, onUpdated }) {
         <input value={address} onChange={(event) => setAddress(event.target.value)} />
       </label>
       <label>
-        <span>Current Airbnb / Zillow / Furnished Finder / Booking.com link</span>
+        <span>Current Airbnb / Vrbo / Booking.com / direct listing link</span>
         <input type="url" value={listingLink} onChange={(event) => setListingLink(event.target.value)} />
       </label>
       <button type="submit" className="secondary-button">Improve Report Confidence</button>
