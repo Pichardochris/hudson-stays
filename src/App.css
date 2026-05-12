@@ -500,6 +500,7 @@ a:focus-visible {
 
 .platform-logo-image {
   width: var(--platform-width, clamp(110px, 10vw, 150px));
+  height: clamp(42px, 4vw, 56px);
   min-height: clamp(42px, 4vw, 56px);
   border-radius: 8px;
   padding: 0;
@@ -507,10 +508,10 @@ a:focus-visible {
 
 .platform-image {
   display: block;
-  width: auto;
-  height: auto;
+  width: 100%;
+  height: 100%;
   max-width: 100%;
-  max-height: clamp(30px, 3.6vw, 46px);
+  max-height: none;
   object-fit: contain;
 }
 
@@ -527,7 +528,8 @@ a:focus-visible {
 }
 
 .platform-furnished-finder {
-  --platform-width: clamp(200px, 20vw, 250px);
+  --platform-width: clamp(240px, 23vw, 310px);
+  height: clamp(58px, 5.2vw, 72px);
 }
 
 .platform-mark {
@@ -1481,7 +1483,7 @@ label small {
   }
 
   .platform-image {
-    max-height: 32px;
+    max-height: none;
   }
 
   .platform-airbnb {
@@ -1494,7 +1496,8 @@ label small {
   }
 
   .platform-furnished-finder {
-    --platform-width: 178px;
+    --platform-width: 218px;
+    height: 54px;
   }
 
   .platform-mark {
