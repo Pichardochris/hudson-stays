@@ -32,10 +32,8 @@ const emptyForm = {
   currentRent: '',
   furnishedStatus: 'Yes',
   email: '',
-  phone: '',
   address: '',
   listingLink: '',
-  wantsSms: false,
 }
 
 const trackingEvents = [
@@ -151,7 +149,7 @@ const legalPages = {
       {
         heading: 'SMS Program',
         text:
-          'Hudson Stays is operated by Niluma Real Estate Investments LLC. When you choose to receive text messages, Hudson Stays may send revenue report links, appointment reminders, and service-related follow-up about your inquiry. Message frequency may vary. Message and data rates may apply.',
+          'Hudson Stays is operated by Niluma Real Estate Investments LLC. SMS opt-in is handled through the chat widget on this website. When you choose to receive text messages, Hudson Stays may send revenue report links, appointment reminders, and service-related follow-up about your inquiry. Message frequency may vary. Message and data rates may apply.',
       },
       {
         heading: 'Opt Out',
@@ -376,8 +374,6 @@ function ReportForm({ source, compact = false, onSubmitted }) {
     if (!form.currentRent) nextErrors.currentRent = 'Required.'
     if (!form.email.trim()) nextErrors.email = 'Email is required.'
     else if (!/^\S+@\S+\.\S+$/.test(form.email)) nextErrors.email = 'Enter a valid email.'
-    if (form.wantsSms && !form.phone.trim()) nextErrors.phone = 'Enter a phone number for SMS opt-in.'
-
     setErrors(nextErrors)
     if (Object.keys(nextErrors).length) return
 
@@ -424,11 +420,6 @@ function ReportForm({ source, compact = false, onSubmitted }) {
           {errors.email && <small>{errors.email}</small>}
         </label>
         <label>
-          <span>Phone number <em>optional</em></span>
-          <input type="tel" value={form.phone} onChange={(event) => update('phone', event.target.value)} placeholder="(201) 555-0123" />
-          {errors.phone && <small>{errors.phone}</small>}
-        </label>
-        <label>
           <span>Full property address <em>optional</em></span>
           <input value={form.address} onChange={(event) => update('address', event.target.value)} placeholder="123 Main St, Hudson, NY" />
         </label>
@@ -438,14 +429,8 @@ function ReportForm({ source, compact = false, onSubmitted }) {
         </label>
       </div>
 
-      <label className="form-consent-check">
-        <input type="checkbox" checked={form.wantsSms} onChange={(event) => update('wantsSms', event.target.checked)} />
-        <span>
-          I consent to receive non-marketing text messages from Hudson Stays / Niluma Real Estate Investments LLC about my revenue report, appointment reminders, and service-related follow-up. Message frequency may vary. Message and data rates may apply. Text HELP for assistance. Reply STOP to opt out. Consent is not required as a condition of purchasing services.
-        </span>
-      </label>
       <p className="form-legal-note">
-        Opt-in method: website form at <strong>stayhudson.com</strong>. By submitting, you agree that Hudson Stays may use your information to prepare your report and follow up about your inquiry. See our <a href="/privacy.html">Privacy Policy</a> and <a href="/terms.html">Terms & Conditions</a>.
+        By submitting, you agree that Hudson Stays may use your information to prepare your report and follow up about your inquiry by email. For text message opt-in, use the chat widget on this site. See our <a href="/privacy.html">Privacy Policy</a> and <a href="/terms.html">Terms & Conditions</a>.
       </p>
       <button className="primary-button" type="submit">Unlock My Revenue Report</button>
       <p className="microcopy">No guaranteed revenue claims. Just market data, property inputs, and a clear next step.</p>
