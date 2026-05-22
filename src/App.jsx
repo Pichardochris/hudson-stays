@@ -63,7 +63,7 @@ const services = [
 ]
 
 const processSteps = [
-  ['1', 'Get the Report', "Get realistic best and worst-case scenarios on revenue potential for your property."],
+  ['1', 'Get the Estimate', "Get realistic best and worst-case scenarios on income potential for your property."],
   ['2', 'Onboard the Home', "Send us some information about your property and we'll handle the photos, listing on multiple channels, pricing, cleaners, reporting, etc."],
   ['3', 'Managed + Optimized', 'Hudson Stays runs the operating system and reviews performance weekly.'],
 ]
@@ -91,12 +91,12 @@ const exampleLiftHigh = exampleNetHigh - exampleRevenue.traditionalRent
 
 const faqItems = [
   ['How does Hudson Stays get paid?', 'Hudson Stays is typically paid through a cohosting management fee based on booking revenue. The exact structure depends on the property, rental strategy, service scope, and what support is needed. We will review this clearly before any agreement is signed.'],
-  ['Is the revenue estimate guaranteed?', 'No. The Free Property Revenue Report is an estimate based on available market data, comparable rentals, property details, seasonality, local rules, and execution quality. We use it to identify realistic upside, not make guaranteed income claims.'],
+  ['Is the income estimate guaranteed?', 'No. The Free Property Income Estimate is based on available market data, comparable rentals, property details, seasonality, local rules, and execution quality. We use it to identify realistic upside, not make guaranteed income claims.'],
   ['Do you only manage short-term rentals?', 'No. We help owners choose the best strategy for the property and area, which may include short-term rentals, mid-term rentals, hybrid rental strategy, or staying long-term if that is the smarter move.'],
   ['Do I need my property to already be furnished?', 'Furnished homes are the best fit. If your property is not furnished yet, we can still review whether it has potential, but the setup needs may be higher.'],
   ['What does Hudson Stays handle?', 'We help with listing setup, pricing strategy, guest communication, cleaner coordination, vendor coordination, owner reporting, and ongoing rental optimization.'],
   ['What kind of properties are a good fit?', 'Furnished homes, duplexes, and small multifamily units with 2 or more bedrooms are usually the best starting point, especially when the owner wants more income without managing guests, tenants, or day-to-day issues.'],
-  ['What happens after I get my report?', 'If the property looks promising, you can claim 30 minutes with a Revenue Manager to review the numbers, risks, fit score, and best next step.'],
+  ['What happens after I get my estimate?', 'If the property looks promising, you can claim 30 minutes with a Hudson Stays expert to review the numbers, risks, fit score, and best next step.'],
   ['What if my property is not a fit?', 'Then we will tell you. Some properties are better as long-term rentals, some are better as mid-term rentals, and some are strong STR candidates. The goal is to recommend the best path, not force the wrong strategy.'],
 ]
 
@@ -106,7 +106,7 @@ const legalPages = {
     title: 'Privacy Policy',
     updated: 'Last updated May 7, 2026',
     intro:
-      'Hudson Stays is operated by Niluma Real Estate Investments LLC. We collect the information you submit so we can prepare revenue reports, respond to inquiries, schedule calls, and provide property management information.',
+      'Hudson Stays is operated by Niluma Real Estate Investments LLC. We collect the information you submit so we can prepare income estimates, respond to inquiries, schedule calls, and provide property management information.',
     sections: [
       {
         heading: 'Information We Collect',
@@ -116,12 +116,12 @@ const legalPages = {
       {
         heading: 'How We Use Information',
         text:
-          'We use this information to create property revenue reports, follow up about Hudson Stays services, schedule calls, improve the website, and communicate with you about your inquiry.',
+          'We use this information to create property income estimates, follow up about Hudson Stays services, schedule calls, improve the website, and communicate with you about your inquiry.',
       },
       {
         heading: 'SMS Consent',
         text:
-          'If you opt in to text messages, Hudson Stays / Niluma Real Estate Investments LLC uses your phone number to send report links, appointment reminders, and service-related follow-up. Message frequency may vary. Message and data rates may apply. Reply STOP to unsubscribe. Reply HELP for assistance. Consent is not required as a condition of purchasing services.',
+          'If you opt in to text messages, Hudson Stays / Niluma Real Estate Investments LLC uses your phone number to send income estimate links, appointment reminders, and service-related follow-up. Message frequency may vary. Message and data rates may apply. Reply STOP to unsubscribe. Reply HELP for assistance. Consent is not required as a condition of purchasing services.',
       },
       {
         heading: 'No Mobile Opt-In Sharing',
@@ -139,17 +139,17 @@ const legalPages = {
     title: 'Terms and SMS Terms',
     updated: 'Last updated May 7, 2026',
     intro:
-      'By using this website or submitting a form, you agree that Hudson Stays may contact you about your inquiry and that all revenue information is preliminary and not guaranteed.',
+      'By using this website or submitting a form, you agree that Hudson Stays may contact you about your inquiry and that all income estimate information is preliminary and not guaranteed.',
     sections: [
       {
-        heading: 'Revenue Reports',
+        heading: 'Income Estimates',
         text:
-          'Revenue reports are estimates based on submitted property details, available market data, comparable rental assumptions, seasonality, and management assumptions. They are not guarantees of future income.',
+          'Income estimates are based on submitted property details, available market data, comparable rental assumptions, seasonality, and management assumptions. They are not guarantees of future income.',
       },
       {
         heading: 'SMS Program',
         text:
-          'Hudson Stays is operated by Niluma Real Estate Investments LLC. SMS opt-in is handled through the chat widget on this website. When you choose to receive text messages, Hudson Stays may send revenue report links, appointment reminders, and service-related follow-up about your inquiry. Message frequency may vary. Message and data rates may apply.',
+          'Hudson Stays is operated by Niluma Real Estate Investments LLC. SMS opt-in is handled through the chat widget on this website. When you choose to receive text messages, Hudson Stays may send income estimate links, appointment reminders, and service-related follow-up about your inquiry. Message frequency may vary. Message and data rates may apply.',
       },
       {
         heading: 'Opt Out',
@@ -430,22 +430,22 @@ function ReportForm({ source, compact = false, onSubmitted }) {
       </div>
 
       <p className="form-legal-note">
-        By submitting, you agree that Hudson Stays may use your information to prepare your report and follow up about your inquiry by email. For text message opt-in, use the chat widget on this site. See our <a href="/privacy.html">Privacy Policy</a> and <a href="/terms.html">Terms & Conditions</a>.
+        By submitting, you agree that Hudson Stays may use your information to prepare your income estimate and follow up about your inquiry by email. For text message opt-in, use the chat widget on this site. See our <a href="/privacy.html">Privacy Policy</a> and <a href="/terms.html">Terms & Conditions</a>.
       </p>
-      <button className="primary-button" type="submit">Unlock My Revenue Report</button>
-      <p className="microcopy">No guaranteed revenue claims. Just market data, property inputs, and a clear next step.</p>
+      <button className="primary-button" type="submit">Unlock My Income Estimate</button>
+      <p className="microcopy">No guaranteed income claims. Just market data, property inputs, and a clear next step.</p>
     </form>
   )
 }
 
 function LoadingReport({ timedOut }) {
-  const steps = ['Reviewing property details', 'Pulling market data', 'Comparing revenue potential', 'Preparing recommendations', 'Building your report']
+  const steps = ['Reviewing property details', 'Pulling market data', 'Comparing income potential', 'Preparing recommendations', 'Building your estimate']
 
   return (
     <section className="loading-panel" aria-live="polite">
       <div className="spinner" />
-      <h2>We are preparing your Free Property Revenue Report.</h2>
-      <p>We are reviewing your property details, local market data, revenue potential, and Hudson Stays fit.</p>
+      <h2>We are preparing your Free Property Income Estimate.</h2>
+      <p>We are reviewing your property details, local market data, income potential, and Hudson Stays fit.</p>
       <ol>
         {steps.map((step) => (
           <li key={step}>{step}</li>
@@ -453,7 +453,7 @@ function LoadingReport({ timedOut }) {
       </ol>
       {timedOut && (
         <div className="fallback-message">
-          <strong>We are finishing your report and sending it to your email.</strong>
+          <strong>We are finishing your income estimate and sending it to your email.</strong>
           <a href="#faq">Check My Inbox</a>
         </div>
       )}
@@ -465,13 +465,13 @@ function HeroReportMockup() {
   return (
     <div className="hero-report-wrap" aria-hidden="true">
       <div className="hero-report-card">
-        <div className="report-tab">Example report</div>
+        <div className="report-tab">Example estimate</div>
         <div className="mini-report-head">
-          <span>Preliminary Property Revenue Report</span>
+          <span>Preliminary Property Income Estimate</span>
           <strong>Hudson, NY</strong>
         </div>
         <div className="mini-report-range">
-          <span>Estimated furnished rental revenue</span>
+          <span>Estimated furnished rental income</span>
           <strong>$5.9k - $8.4k/mo</strong>
         </div>
         <div className="mini-report-grid">
@@ -486,7 +486,7 @@ function HeroReportMockup() {
           <span />
           <span />
         </div>
-        <div className="mini-report-cta">Claim 30 Minutes With Our Revenue Manager</div>
+        <div className="mini-report-cta">Claim 30 Minutes With Our Hudson Stays Team</div>
       </div>
     </div>
   )
@@ -510,8 +510,8 @@ function FollowUpAccuracy({ report, onUpdated }) {
   return (
     <form className="accuracy-card" onSubmit={saveDetails}>
       <div>
-        <h3>Want a more accurate report?</h3>
-        <p>Add the full property address so we can improve report confidence with property-specific market data.</p>
+        <h3>Want a more accurate estimate?</h3>
+        <p>Add the full property address so we can improve estimate confidence with property-specific market data.</p>
       </div>
       <label>
         <span>Full property address</span>
@@ -521,7 +521,7 @@ function FollowUpAccuracy({ report, onUpdated }) {
         <span>Current Airbnb / Vrbo / Booking.com / direct listing link</span>
         <input type="url" value={listingLink} onChange={(event) => setListingLink(event.target.value)} />
       </label>
-      <button type="submit" className="secondary-button">Improve Report Confidence</button>
+      <button type="submit" className="secondary-button">Improve Estimate Confidence</button>
     </form>
   )
 }
@@ -533,16 +533,16 @@ function ReportExperience({ report, onUpdated }) {
     <section className="report-experience" id="report-ready">
       <div className="ready-banner">
         <div>
-          <p className="eyebrow">Report ready</p>
-          <h2>Your Free Property Revenue Report is ready.</h2>
-          <p>Want help interpreting the numbers? Claim 30 minutes with our Revenue Manager to review your property's revenue potential, fit score, and best next step.</p>
+          <p className="eyebrow">Estimate ready</p>
+          <h2>Your Free Property Income Estimate is ready.</h2>
+          <p>Want help interpreting the numbers? Claim 30 minutes with our team to review your property's income potential, fit score, and best next step.</p>
         </div>
         <a
           className="primary-button"
           href={bookingUrl}
           onClick={() => trackEvent('onpage_revenue_manager_cta_clicked', { token: report.token })}
         >
-          Claim 30 Minutes With Our Revenue Manager
+          Claim 30 Minutes With Our Hudson Stays Team
         </a>
       </div>
       <PropertyReport report={report} />
@@ -563,9 +563,9 @@ function PropertyReport({ report }) {
     <article className="property-report">
       <header className="report-hero">
         <div>
-          <p className="eyebrow">Preliminary Property Revenue Report</p>
+          <p className="eyebrow">Preliminary Property Income Estimate</p>
           <h1>{report.lead.location || 'Your Property'}</h1>
-          <p>This report is based on the property details provided, available market data, and comparable rental assumptions. Adding a full address or current listing link can improve the accuracy of the estimate.</p>
+          <p>This income estimate is based on the property details provided, available market data, and comparable rental assumptions. Adding a full address or current listing link can improve accuracy.</p>
         </div>
         <a className="text-link" href={bookingUrl} onClick={() => trackEvent('report_top_cta_clicked', { token: report.token })}>
           Want our team to review this with you? Book Here
@@ -574,7 +574,7 @@ function PropertyReport({ report }) {
 
       <section className="report-metrics">
         <div>
-          <span>Estimated Furnished Rental Revenue Range</span>
+          <span>Estimated Furnished Rental Income Range</span>
           <strong>{shortMoney(report.estimates.low)} - {shortMoney(report.estimates.high)}/mo</strong>
         </div>
         <div>
@@ -600,7 +600,7 @@ function PropertyReport({ report }) {
         </div>
         <div>
           <h2>Local Market Snapshot</h2>
-          <p>{marketSummary || 'Revenue estimates use local rental assumptions, property inputs, seasonal demand, comparable rental logic, and Hudson Stays operating standards.'}</p>
+          <p>{marketSummary || 'Income estimates use local rental assumptions, property inputs, seasonal demand, comparable rental logic, and Hudson Stays operating standards.'}</p>
           {report.marketData?.source && <p><strong>Market data source:</strong> {report.marketData.source}</p>}
           {(report.marketData?.adr || report.marketData?.occupancy || report.marketData?.compCount) && (
             <p>
@@ -629,7 +629,7 @@ function PropertyReport({ report }) {
       </section>
 
       <section className="report-band">
-        <h2>Top 3 Revenue Improvement Opportunities</h2>
+        <h2>Top 3 Income Improvement Opportunities</h2>
         <div className="three-up">
           {report.opportunities.map((item) => (
             <p key={item}>{item}</p>
@@ -648,7 +648,7 @@ function PropertyReport({ report }) {
         </div>
         <div>
           <h2>Before You Book a Call, Here's What Most Owners Want to Know</h2>
-          <p><strong>Is this revenue guaranteed?</strong> No. The report is an estimate based on market data, comparable rentals, property details, seasonality, and execution quality.</p>
+          <p><strong>Is this income guaranteed?</strong> No. This is an estimate based on market data, comparable rentals, property details, seasonality, and execution quality.</p>
           <p><strong>Will this become another job for me?</strong> No. Hudson Stays is built for owners who want the income upside without handling day-to-day coordination.</p>
           <p><strong>What if my property is not a fit?</strong> Then we will say that and recommend the smarter path.</p>
         </div>
@@ -657,7 +657,7 @@ function PropertyReport({ report }) {
       <section className="report-cta">
         <div>
           <h2>Review this with an expert.</h2>
-          <p>Walk through the revenue range, risk notes, fit label, and best next step with a Revenue Manager.</p>
+          <p>Walk through the income range, risk notes, fit label, and best next step with our team.</p>
         </div>
         <a className="primary-button" href={bookingUrl} onClick={() => trackEvent('report_recommendation_cta_clicked', { token: report.token })}>
           Book a Free Property Review Call
@@ -680,9 +680,9 @@ function ReportPage() {
       <main className="standalone-page">
         <a className="brand-link" href="/">Hudson Stays</a>
         <section className="missing-report">
-          <h1>We could not find that report on this device.</h1>
-          <p>For the MVP, generated reports are stored locally in this browser and prepared for email delivery through the backend stub.</p>
-          <a className="primary-button" href="/">Request a Free Property Revenue Report</a>
+          <h1>We could not find that estimate on this device.</h1>
+          <p>For the MVP, generated estimates are stored locally in this browser and prepared for email delivery through the backend stub.</p>
+          <a className="primary-button" href="/">Request a Free Property Income Estimate</a>
         </section>
       </main>
     )
@@ -746,7 +746,7 @@ function ThankYouPage() {
       <SimpleHeader />
       <main className="standalone-page thank-you-page">
         <section className="thank-you-card">
-          <p className="eyebrow">Report request received</p>
+          <p className="eyebrow">Estimate request received</p>
           <h1>Thanks. We are reviewing your property details.</h1>
           <p>Get ahead of the line, and book a call with our experts today.</p>
           <a
@@ -795,7 +795,7 @@ function SimpleHeader() {
       <nav aria-label="Main navigation">
         <a href={stayBookingUrl}>Book A Stay</a>
         <a className="nav-start-button" href={onboardingUrl}>I'm Ready To Start</a>
-        <a className="nav-report-button" href="/#book-property-review">Get Revenue Report</a>
+        <a className="nav-report-button" href="/#book-property-review">Get Income Estimate</a>
       </nav>
     </header>
   )
@@ -887,7 +887,7 @@ function HomePage() {
           <a href="#strategy">Strategy</a>
           <a href="#faq">FAQ</a>
           <a className="nav-start-button" href={onboardingUrl}>I'm Ready To Start</a>
-          <a className="nav-report-button" href="#book-property-review">Get Revenue Report</a>
+          <a className="nav-report-button" href="#book-property-review">Get Income Estimate</a>
         </nav>
       </header>
 
@@ -978,13 +978,13 @@ function HomePage() {
               </ul>
             </div>
           </div>
-          <p className="claim-note">*Example based on the sample report range shown above. Results vary by property, market, season, local rules, and execution quality. Revenue estimates are not guaranteed.</p>
+          <p className="claim-note">*Example based on the sample estimate range shown above. Results vary by property, market, season, local rules, and execution quality. Income estimates are not guaranteed.</p>
         </section>
 
         <section className="timeline-section">
           <div className="section-heading">
             <h2>How it Works</h2>
-            <p className="timeline-label">Report - Onboard - Manage</p>
+            <p className="timeline-label">Estimate - Onboard - Manage</p>
           </div>
           <div className="timeline">
             {processSteps.map(([number, title, copy], index) => {
@@ -1027,7 +1027,7 @@ function HomePage() {
               <h3>Not ideal if</h3>
               <ul>
                 <li>The property is not and never will be furnished</li>
-                <li>Your area has low demand or is heavily restricted for stays under 30 days. We can help you figure this out with our <a className="inline-link" href="#book-property-review">Revenue Report</a>.</li>
+                <li>Your area has low demand or is heavily restricted for stays under 30 days. We can help you figure this out with our <a className="inline-link" href="#book-property-review">Income Estimate</a>.</li>
                 <li>You only want a traditional long-term tenant and are not interested in exploring higher-income rental strategies</li>
               </ul>
             </div>
@@ -1062,7 +1062,7 @@ function HomePage() {
           <div>
             <p className="eyebrow">Start Here</p>
             <h2>Find Out if Your Home Could Earn More</h2>
-            <p>Get a Free Property Revenue Report showing your property's income potential, best rental strategy, and whether Hudson Stays may be a fit to help manage it.</p>
+            <p>Get a Free Property Income Estimate showing your property's income potential, best rental strategy, and whether Hudson Stays may be a fit to help manage it.</p>
           </div>
           <div className="form-card" id="book-property-review" ref={formRef}>
             {status === 'loading' ? <LoadingReport timedOut={timedOut} /> : <ReportForm source="final" compact onSubmitted={submitLead} />}

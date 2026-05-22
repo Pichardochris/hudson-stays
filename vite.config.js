@@ -996,7 +996,7 @@ async function generateOpenAiNarrative({ lead, calculation, rabbuMarketData, lis
           {
             type: 'input_text',
             text:
-              'You create structured preliminary furnished-rental revenue reports for Hudson Stays. Be specific, concise, and careful with revenue/regulatory claims.',
+              'You create structured preliminary furnished-rental income estimates for Hudson Stays. Be specific, concise, and careful with income/regulatory claims.',
           },
         ],
       },
@@ -1192,14 +1192,14 @@ async function createGoHighLevelOpportunity({ baseUrl, token, locationId, contac
     }
   }
 
-  const opportunityName = `${lead.location || 'Property'} Revenue Report`
+  const opportunityName = `${lead.location || 'Property'} Income Estimate`
   const payload = {
     locationId,
     contactId,
     pipelineId,
     pipelineStageId,
     name: opportunityName,
-    source: 'Hudson Stays Website Revenue Report',
+    source: 'Hudson Stays Website Income Estimate',
     status: getEnv('GHL_OPPORTUNITY_STATUS') || 'open',
     monetaryValue: Math.round(report.estimates.annualGap || report.estimates.mid || 0),
     assignedTo: getEnv('GHL_ASSIGNED_USER_ID'),
@@ -1308,7 +1308,7 @@ async function syncLeadToGoHighLevel({ lead, report, source }) {
 
   const baseUrl = getEnv('GHL_API_BASE_URL') || 'https://services.leadconnectorhq.com'
   const tags = [
-    'Website Revenue Report Submitted',
+    'Website Income Estimate Submitted',
     source === 'hero' ? 'Hero Form Submitted' : 'Final CTA Form Submitted',
     lead.wantsSms ? 'SMS Eligible' : 'Email Only',
     report.fitLabel,
@@ -1319,7 +1319,7 @@ async function syncLeadToGoHighLevel({ lead, report, source }) {
     locationId,
     email: optionalString(lead.email),
     phone: lead.wantsSms ? optionalString(lead.phone) : undefined,
-    source: 'Hudson Stays Website Revenue Report',
+    source: 'Hudson Stays Website Income Estimate',
     tags,
     customFields: buildGhlCustomFields({ lead, report }),
   }
@@ -1456,13 +1456,13 @@ function revenueReportPlugin() {
                 'GHL_CF_REPORT_URL_ID',
               ],
               tags: [
-                'Website Revenue Report Submitted',
+                'Website Income Estimate Submitted',
                 source === 'hero' ? 'Hero Form Submitted' : 'Final CTA Form Submitted',
                 report.lead.wantsSms ? 'SMS Eligible' : 'Email Only',
                 report.fitLabel,
                 getEnv('GHL_REPORT_TRIGGER_TAG'),
               ].filter(Boolean),
-              pipelineStage: 'New Property Revenue Report Lead',
+              pipelineStage: 'New Property Income Estimate Lead',
               status: crmSync.status,
               contactSync: crmSync,
             },
@@ -1491,14 +1491,14 @@ function revenueReportPlugin() {
               email: {
                 provider: 'GoHighLevel workflow',
                 env: ['REPORT_BASE_URL', 'GHL_REPORT_TRIGGER_TAG', 'GHL_REPORT_WORKFLOW_WEBHOOK_URL'],
-                subject: 'Your Free Property Revenue Report is ready',
-                primaryCta: 'View My Property Revenue Report',
+                subject: 'Your Free Property Income Estimate is ready',
+                primaryCta: 'View My Property Income Estimate',
                 status: crmSync.deliverySync?.status || 'not_configured',
               },
               sms: report.lead.wantsSms
                 ? {
                     env: ['SMS_PROVIDER_API_KEY', 'REPORT_BASE_URL'],
-                    copy: 'Your Hudson Stays Property Revenue Report is ready: {{report_link}}',
+                    copy: 'Your Hudson Stays Property Income Estimate is ready: {{report_link}}',
                   }
                 : null,
             },

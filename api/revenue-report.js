@@ -231,11 +231,11 @@ function buildNotificationPayload({ lead, report, source }) {
 
 function slackPayload({ lead, report, source }) {
   return {
-    text: `New Hudson Stays revenue report lead: ${lead.email}`,
+    text: `New Hudson Stays income estimate lead: ${lead.email}`,
     blocks: [
       {
         type: 'header',
-        text: { type: 'plain_text', text: 'New Hudson Stays Revenue Report Lead' },
+        text: { type: 'plain_text', text: 'New Hudson Stays Income Estimate Lead' },
       },
       {
         type: 'section',
