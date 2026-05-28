@@ -149,7 +149,7 @@ const legalPages = {
       {
         heading: 'SMS Program',
         text:
-          'Hudson Stays is operated by Niluma Real Estate Investments LLC. SMS opt-in is handled through the chat widget on this website. When you choose to receive text messages, Hudson Stays may send income estimate links, appointment reminders, and service-related follow-up about your inquiry. Message frequency may vary. Message and data rates may apply.',
+          'Hudson Stays is operated by Niluma Real Estate Investments LLC. SMS opt-in is handled through the website income estimate form. When you choose to receive text messages, Hudson Stays may send income estimate links, appointment reminders, and service-related follow-up about your inquiry. Message frequency may vary. Message and data rates may apply.',
       },
       {
         heading: 'Opt Out',
@@ -430,11 +430,44 @@ function ReportForm({ source, compact = false, onSubmitted }) {
       </div>
 
       <p className="form-legal-note">
-        By submitting, you agree that Hudson Stays may use your information to prepare your income estimate and follow up about your inquiry by email. For text message opt-in, use the chat widget on this site. See our <a href="/privacy.html">Privacy Policy</a> and <a href="/terms.html">Terms & Conditions</a>.
+        By submitting, you agree that Hudson Stays may use your information to prepare your income estimate and follow up about your inquiry by email. Text message opt-in is optional and handled through the income estimate form. See our <a href="/privacy.html">Privacy Policy</a> and <a href="/terms.html">Terms & Conditions</a>.
       </p>
       <button className="primary-button" type="submit">Unlock My Income Estimate</button>
       <p className="microcopy">No guaranteed income claims. Just market data, property inputs, and a clear next step.</p>
     </form>
+  )
+}
+
+function GhlIncomeEstimateForm() {
+  useEffect(() => {
+    const scriptSrc = 'https://link.msgsndr.com/js/form_embed.js'
+    if (document.querySelector(`script[src="${scriptSrc}"]`)) return
+
+    const script = document.createElement('script')
+    script.src = scriptSrc
+    script.async = true
+    document.body.appendChild(script)
+  }, [])
+
+  return (
+    <div className="ghl-form-embed">
+      <iframe
+        src="https://api.leadconnectorhq.com/widget/form/Sg1GFrpUoeIipjYen9at"
+        id="inline-Sg1GFrpUoeIipjYen9at"
+        data-layout="{'id':'INLINE'}"
+        data-trigger-type="alwaysShow"
+        data-trigger-value=""
+        data-activation-type="alwaysActivated"
+        data-activation-value=""
+        data-deactivation-type="neverDeactivate"
+        data-deactivation-value=""
+        data-form-name="Income Estimate"
+        data-height="772"
+        data-layout-iframe-id="inline-Sg1GFrpUoeIipjYen9at"
+        data-form-id="Sg1GFrpUoeIipjYen9at"
+        title="Income Estimate"
+      />
+    </div>
   )
 }
 
@@ -1064,8 +1097,8 @@ function HomePage() {
             <h2>Find Out if Your Home Could Earn More</h2>
             <p>Get a Free Property Income Estimate showing your property's income potential, best rental strategy, and whether Hudson Stays may be a fit to help manage it.</p>
           </div>
-          <div className="form-card" id="book-property-review" ref={formRef}>
-            {status === 'loading' ? <LoadingReport timedOut={timedOut} /> : <ReportForm source="final" compact onSubmitted={submitLead} />}
+          <div className="form-card ghl-form-card" id="book-property-review" ref={formRef}>
+            <GhlIncomeEstimateForm />
           </div>
         </section>
 

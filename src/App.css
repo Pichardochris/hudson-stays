@@ -870,6 +870,25 @@ a:focus-visible {
   box-shadow: 0 18px 50px rgba(17, 16, 61, 0.08);
 }
 
+.ghl-form-card {
+  padding: 0;
+  overflow: hidden;
+}
+
+.ghl-form-embed {
+  width: 100%;
+  min-height: 772px;
+  background: #fff;
+}
+
+.ghl-form-embed iframe {
+  display: block;
+  width: 100%;
+  min-height: 772px;
+  border: 0;
+  border-radius: 8px;
+}
+
 .report-form {
   display: grid;
   gap: 14px;
