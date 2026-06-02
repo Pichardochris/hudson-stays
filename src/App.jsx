@@ -8,6 +8,7 @@ import {
   CircleDollarSign,
   ClipboardList,
   Home,
+  Menu,
   MessageCircle,
   Sparkles,
   Wrench,
@@ -819,13 +820,24 @@ function LegalFooterSections() {
 }
 
 function SimpleHeader() {
+  const [menuOpen, setMenuOpen] = useState(false)
+
   return (
     <header className="site-header">
       <a className="logo" href="/" aria-label="Hudson Stays home">
         <HudsonLogo />
         <span>Hudson Stays</span>
       </a>
-      <nav aria-label="Main navigation">
+      <button
+        className="mobile-menu-toggle"
+        type="button"
+        aria-label={menuOpen ? 'Close navigation menu' : 'Open navigation menu'}
+        aria-expanded={menuOpen}
+        onClick={() => setMenuOpen((open) => !open)}
+      >
+        {menuOpen ? <XCircle size={24} /> : <Menu size={24} />}
+      </button>
+      <nav className={menuOpen ? 'is-open' : ''} aria-label="Main navigation">
         <a href={stayBookingUrl}>Book A Stay</a>
         <a className="nav-start-button" href={onboardingUrl}>I'm Ready To Start</a>
         <a className="nav-report-button" href="/#book-property-review">Get Income Estimate</a>
@@ -864,6 +876,7 @@ function HomePage() {
   const [status, setStatus] = useState('idle')
   const [timedOut, setTimedOut] = useState(false)
   const [report, setReport] = useState(null)
+  const [menuOpen, setMenuOpen] = useState(false)
 
   function scrollToForm() {
     formRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' })
@@ -914,7 +927,16 @@ function HomePage() {
         <a href="/" className="logo" aria-label="Hudson Stays home">
           <HudsonLogo />
         </a>
-        <nav aria-label="Primary navigation">
+        <button
+          className="mobile-menu-toggle"
+          type="button"
+          aria-label={menuOpen ? 'Close navigation menu' : 'Open navigation menu'}
+          aria-expanded={menuOpen}
+          onClick={() => setMenuOpen((open) => !open)}
+        >
+          {menuOpen ? <XCircle size={24} /> : <Menu size={24} />}
+        </button>
+        <nav className={menuOpen ? 'is-open' : ''} aria-label="Primary navigation">
           <a href={stayBookingUrl}>Book A Stay</a>
           <a href="#services">Services</a>
           <a href="#strategy">Strategy</a>
