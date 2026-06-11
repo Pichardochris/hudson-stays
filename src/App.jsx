@@ -50,6 +50,9 @@ const trackingEvents = [
   'email_booking_cta_clicked',
   'call_booked',
   'thank_you_booking_cta_clicked',
+  'hero_cta_clicked',
+  'inline_cta_clicked',
+  'sticky_cta_clicked',
 ]
 
 const serviceIcons = [Camera, BarChart3, MessageCircle, CalendarCheck, Wrench, ClipboardList]
@@ -837,7 +840,7 @@ function SimpleHeader() {
       >
         {menuOpen ? <XCircle size={24} /> : <Menu size={24} />}
       </button>
-      <nav className={menuOpen ? 'is-open' : ''} aria-label="Main navigation">
+      <nav className={menuOpen ? 'is-open' : ''} aria-label="Main navigation" onClick={() => setMenuOpen(false)}>
         <a href={stayBookingUrl}>Book A Stay</a>
         <a className="nav-start-button" href={onboardingUrl}>I'm Ready To Start</a>
         <a className="nav-report-button" href="/#book-property-review">Get Income Estimate</a>
@@ -877,10 +880,22 @@ function HomePage() {
   const [timedOut, setTimedOut] = useState(false)
   const [report, setReport] = useState(null)
   const [menuOpen, setMenuOpen] = useState(false)
+  const [showStickyCta, setShowStickyCta] = useState(false)
 
   function scrollToForm() {
     formRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' })
   }
+
+  useEffect(() => {
+    function onScroll() {
+      const formTop = formRef.current?.getBoundingClientRect().top ?? Infinity
+      setShowStickyCta(window.scrollY > 520 && formTop > window.innerHeight)
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true })
+    onScroll()
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
 
   async function submitLead(form, source) {
     setStatus('loading')
@@ -936,7 +951,7 @@ function HomePage() {
         >
           {menuOpen ? <XCircle size={24} /> : <Menu size={24} />}
         </button>
-        <nav className={menuOpen ? 'is-open' : ''} aria-label="Primary navigation">
+        <nav className={menuOpen ? 'is-open' : ''} aria-label="Primary navigation" onClick={() => setMenuOpen(false)}>
           <a href={stayBookingUrl}>Book A Stay</a>
           <a href="#services">Services</a>
           <a href="#strategy">Strategy</a>
@@ -951,7 +966,22 @@ function HomePage() {
           <div className="hero-copy">
             <h1>More Rental Income. Less Worry.</h1>
             <p className="hero-subtitle">Hudson Stays helps furnished property owners increase income potential and reduce owner workload with short-term, mid-term, or hybrid rental management services.</p>
-            <button className="primary-button hero-button" type="button" onClick={scrollToForm}>See What My Property Could Earn</button>
+            <button
+              className="primary-button hero-button"
+              type="button"
+              onClick={() => {
+                trackEvent('hero_cta_clicked')
+                scrollToForm()
+              }}
+            >
+              See What My Property Could Earn
+            </button>
+            <p className="cta-microcopy">Free &middot; Takes about 60 seconds &middot; No obligation</p>
+            <ul className="hero-trust-list">
+              <li><CheckCircle2 size={17} /> Listed across Airbnb, Vrbo &amp; Booking.com</li>
+              <li><CheckCircle2 size={17} /> Backed by a $2M insurance policy</li>
+              <li><CheckCircle2 size={17} /> If your property is not a fit, we will tell you</li>
+            </ul>
           </div>
 
           <HeroReportMockup />
@@ -1036,6 +1066,22 @@ function HomePage() {
           <p className="claim-note">*Example based on the sample estimate range shown above. Results vary by property, market, season, local rules, and execution quality. Income estimates are not guaranteed.</p>
         </section>
 
+        <section className="inline-cta" aria-label="Get your free income estimate">
+          <h2>Curious where your property lands?</h2>
+          <p>Run your numbers and see your estimated income range, recommended strategy, and fit.</p>
+          <button
+            className="primary-button"
+            type="button"
+            onClick={() => {
+              trackEvent('inline_cta_clicked')
+              scrollToForm()
+            }}
+          >
+            Get My Free Income Estimate
+          </button>
+          <p className="cta-microcopy">Free &middot; Takes about 60 seconds &middot; No obligation</p>
+        </section>
+
         <section className="timeline-section">
           <div className="section-heading">
             <h2>How it Works</h2>
@@ -1118,6 +1164,11 @@ function HomePage() {
             <p className="eyebrow">Start Here</p>
             <h2>Find Out if Your Home Could Earn More</h2>
             <p>Get a Free Property Income Estimate showing your property's income potential, best rental strategy, and whether Hudson Stays may be a fit to help manage it.</p>
+            <ul className="cta-benefits">
+              <li><CheckCircle2 size={18} /> Estimated monthly income range for your property</li>
+              <li><CheckCircle2 size={18} /> Recommended strategy: short-term, mid-term, or hybrid</li>
+              <li><CheckCircle2 size={18} /> A straight answer on fit, even if the answer is no</li>
+            </ul>
           </div>
           <div className="form-card ghl-form-card" id="book-property-review" ref={formRef}>
             <GhlIncomeEstimateForm />
@@ -1126,7 +1177,8 @@ function HomePage() {
 
         <section className="faq-section" id="faq">
           <div className="section-heading">
-            <h2>FAQ</h2>
+            <h2>Frequently Asked Questions</h2>
+            <p>Straight answers before you request your estimate.</p>
           </div>
           <div className="faq-list">
             {faqItems.map(([question, answer]) => (
@@ -1138,6 +1190,20 @@ function HomePage() {
           </div>
         </section>
       </main>
+
+      <div className={showStickyCta ? 'sticky-cta-bar is-visible' : 'sticky-cta-bar'} aria-hidden={!showStickyCta}>
+        <button
+          className="primary-button"
+          type="button"
+          tabIndex={showStickyCta ? 0 : -1}
+          onClick={() => {
+            trackEvent('sticky_cta_clicked')
+            scrollToForm()
+          }}
+        >
+          Get My Free Income Estimate
+        </button>
+      </div>
 
       <SiteFooter />
     </div>
