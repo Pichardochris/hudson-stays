@@ -5,6 +5,10 @@
       "destination": "/index.html"
     },
     {
+      "source": "/discovery",
+      "destination": "/index.html"
+    },
+    {
       "source": "/property-report/:path*",
       "destination": "/index.html"
     },

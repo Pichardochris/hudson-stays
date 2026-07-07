@@ -77,6 +77,41 @@ const platformLogos = [
   { label: 'Booking.com', src: '/platform-logos/booking.png', slug: 'booking' },
 ]
 
+const googleReviewUrl = 'https://maps.app.goo.gl/43zb3RtUjVoYxik6A'
+
+const googleReviews = [
+  {
+    name: 'Ryan Silvestre',
+    context: 'Owner review',
+    quote: 'They think about my bottom line first and are very revenue focused.',
+  },
+  {
+    name: 'Leandy Medina',
+    context: 'Owner review',
+    quote: 'Professional, attentive, and truly knows how to maximize a rental’s potential.',
+  },
+  {
+    name: 'Jean S',
+    context: 'Guest review',
+    quote: 'Clean, easy check-in, and super chill host. Will book again next year.',
+  },
+  {
+    name: 'Alicia Kaisen',
+    context: 'Guest review',
+    quote: 'The entire experience has been a dream. Home is immaculate and they provide everything you need.',
+  },
+  {
+    name: 'Mike',
+    context: 'Guest review',
+    quote: 'Comfortable, clean, and actually felt like someone cared about the details.',
+  },
+  {
+    name: 'Juan Medina',
+    context: 'Owner review',
+    quote: 'They made us feel comfortable opening our home to guests.',
+  },
+]
+
 const exampleRevenue = {
   market: 'Hudson, NY 3BR example',
   traditionalRent: 3500,
@@ -756,6 +791,26 @@ function ExternalBookingRedirect() {
   )
 }
 
+function DiscoveryRedirect() {
+  useEffect(() => {
+    window.location.replace(bookingUrl)
+  }, [])
+
+  return (
+    <div className="site-shell">
+      <SimpleHeader />
+      <main className="standalone-page">
+        <section className="missing-report">
+          <h1>Opening Hudson Stays discovery call.</h1>
+          <p>If you are not redirected automatically, use the button below.</p>
+          <a className="primary-button" href={bookingUrl}>Book a Discovery Call</a>
+        </section>
+      </main>
+      <SiteFooter />
+    </div>
+  )
+}
+
 function SiteFooter() {
   return (
     <footer className="site-footer">
@@ -1036,6 +1091,29 @@ function HomePage() {
           <p className="claim-note">*Example based on the sample estimate range shown above. Results vary by property, market, season, local rules, and execution quality. Income estimates are not guaranteed.</p>
         </section>
 
+        <section className="reviews-section" id="reviews">
+          <div className="reviews-heading">
+            <div>
+              <p className="eyebrow">Google reviews</p>
+              <h2>Owners and guests notice the difference.</h2>
+              <p>Real feedback from property owners and guests who have experienced Hudson Stays.</p>
+            </div>
+            <a className="secondary-button" href={googleReviewUrl} target="_blank" rel="noreferrer">Read All Google Reviews</a>
+          </div>
+          <div className="review-grid">
+            {googleReviews.map((review) => (
+              <article className="review-card" key={review.name}>
+                <div className="review-stars" aria-label="5 out of 5 stars">★★★★★</div>
+                <blockquote>“{review.quote}”</blockquote>
+                <p>
+                  <strong>{review.name}</strong>
+                  <span>{review.context} on Google</span>
+                </p>
+              </article>
+            ))}
+          </div>
+        </section>
+
         <section className="timeline-section">
           <div className="section-heading">
             <h2>How it Works</h2>
@@ -1148,6 +1226,7 @@ function App() {
   if (window.location.pathname === '/privacy' || window.location.pathname === '/terms') {
     return <LegalPage page={window.location.pathname} />
   }
+  if (window.location.pathname.startsWith('/discovery')) return <DiscoveryRedirect />
   if (window.location.pathname.startsWith('/thank-you')) return <ThankYouPage />
   if (window.location.pathname.startsWith('/property-report/')) return <ReportPage />
   if (window.location.pathname.startsWith('/properties')) return <ExternalBookingRedirect />

@@ -62,6 +62,7 @@ a.secondary-button {
 .proof-strip,
 .services-section,
 .before-after-section,
+.reviews-section,
 .timeline-section,
 .fit-section,
 .strategy-section,
@@ -409,6 +410,7 @@ a:focus-visible {
 
 .services-section,
 .before-after-section,
+.reviews-section,
 .timeline-section,
 .fit-section,
 .strategy-section,
@@ -436,6 +438,7 @@ a:focus-visible {
 }
 
 .service-card,
+.review-card,
 .strategy-grid article,
 .ready-banner,
 .property-report,
@@ -473,12 +476,83 @@ a:focus-visible {
 }
 
 .service-card p,
+.review-card p,
 .strategy-grid p,
 .timeline p,
 .fit-columns li,
 .before-after-graphic li {
   color: #4f6072;
   line-height: 1.55;
+}
+
+.reviews-section {
+  padding-top: 0;
+}
+
+.reviews-heading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+.reviews-heading > div {
+  max-width: 720px;
+}
+
+.reviews-heading h2 {
+  margin-bottom: 12px;
+  font-size: clamp(1.9rem, 3.5vw, 3.1rem);
+}
+
+.reviews-heading p:not(.eyebrow) {
+  margin-bottom: 0;
+  color: var(--muted);
+  line-height: 1.62;
+}
+
+.review-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.review-card {
+  min-height: 218px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.review-stars {
+  color: #f4a900;
+  font-size: 0.98rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+}
+
+.review-card blockquote {
+  margin: 0;
+  color: var(--ink);
+  font-size: 1.03rem;
+  font-weight: 800;
+  line-height: 1.52;
+}
+
+.review-card p {
+  display: grid;
+  gap: 2px;
+  margin: auto 0 0;
+}
+
+.review-card strong {
+  color: var(--navy);
+}
+
+.review-card span {
+  font-size: 0.9rem;
 }
 
 .proof-strip {
@@ -1358,6 +1432,7 @@ label small {
 
   .service-grid,
   .strategy-grid,
+  .review-grid,
   .report-metrics,
   .report-section-grid,
   .three-up {
@@ -1494,6 +1569,7 @@ label small {
   .legal-footer-sections,
   .service-grid,
   .strategy-grid,
+  .review-grid,
   .fit-columns,
   .report-metrics,
   .report-section-grid,
@@ -1541,6 +1617,25 @@ label small {
 
   .claim-note {
     white-space: normal;
+  }
+
+  .reviews-section {
+    padding-top: 0;
+  }
+
+  .reviews-heading {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .reviews-heading .secondary-button {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .review-card {
+    min-height: auto;
   }
 
   .hero-report-wrap {
